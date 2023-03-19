@@ -4,69 +4,54 @@ import 'package:flutter/material.dart';
 
 import '../models/contact.dart';
 
-class _AzItem extends ISuspensionBean {
-  final String name;
-  final String number;
-  final String tag;
-
-  _AzItem({
-    required this.name,
-    required this.number,
-    required this.tag,
-  });
-  @override
-  String getSuspensionTag() => tag;
-}
-
 class AlphabeticScrollPage extends StatefulWidget {
-  final List<String> items;
-  const AlphabeticScrollPage({super.key, required this.items});
+  final List<Contact> contacts;
+  const AlphabeticScrollPage({super.key, required this.contacts});
 
   @override
   State<AlphabeticScrollPage> createState() => _AlphabeticScrollPageState();
 }
 
 class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
-  List<_AzItem> items = [];
+  List<Contact> contacts = [];
+
   @override
   void initState() {
-    initList(widget.items);
+    initList(widget.contacts);
     super.initState();
   }
 
-  void initList(List<String> items) {
-    this.items = items
-        .map(
-          (item) =>
-              _AzItem(name: item, number: item, tag: item[0].toUpperCase()),
-        )
-        .toList();
-    SuspensionUtil.sortListBySuspensionTag(this.items);
-    SuspensionUtil.setShowSuspensionStatus(this.items);
+  void initList(List<Contact> contacts) {
+    this.contacts = contacts;
+    SuspensionUtil.sortListBySuspensionTag(this.contacts);
+    SuspensionUtil.setShowSuspensionStatus(this.contacts);
   }
+
 
   @override
   Widget build(BuildContext context) {
     return AzListView(
-      data: items,
-      itemCount: items.length,
+      data: contacts,
+      itemCount: contacts.length,
       itemBuilder: (context, index) {
-        final contact = items[index];
+        final contact = contacts[index];
         return _buildListItem(contact);
       },
-      indexHintBuilder: (_, hint) => Container(
-        alignment: Alignment.center,
-        height: 60,
-        width: 60,
-        decoration: const BoxDecoration(
-          color: Colors.blue,
-          shape: BoxShape.circle,
-        ),
-        child: Text(
-          hint,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 30,
+      indexHintBuilder: (_, hint) => Expanded(
+        child: Container(
+          alignment: Alignment.center,
+          height: 60,
+          width: 60,
+          decoration: const BoxDecoration(
+            color: Colors.blue,
+            shape: BoxShape.circle,
+          ),
+          child: Text(
+            hint,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 30,
+            ),
           ),
         ),
       ),
@@ -87,9 +72,9 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
     );
   }
 
-  Widget _buildListItem(_AzItem item) {
-    final tag = item.getSuspensionTag();
-    final offstage = !item.isShowSuspension;
+  Widget _buildListItem(Contact contact) {
+    final tag = contact.getSuspensionTag();
+    final offstage = !contact.isShowSuspension;
     return Column(
       children: [
         Offstage(
@@ -97,8 +82,9 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
           child: buildHeader(tag),
         ),
         ContactTile(
-          name: item.name,
-          number: item.number,
+          name: contact.name,
+          number: contact.number,
+          group: contact.group,
         ),
       ],
     );

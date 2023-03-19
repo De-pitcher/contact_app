@@ -47,9 +47,13 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       appBar: AppBar(
         elevation: 0,
         title: const Text('Contact App'),
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(70),
-          child: SearchTile(),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(70),
+          child: SearchTile(
+              contacts: Hive.box<ContactList>(contactListBoxName)
+                  .values
+                  .first
+                  .contacts),
         ),
       ),
       body: _widgetOptions.elementAt(_selectedIndex),

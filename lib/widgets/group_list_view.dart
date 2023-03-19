@@ -37,8 +37,7 @@ class GroupListView extends StatelessWidget {
                   (item) => ContactTile(
                     name: item.name,
                     number: item.number.toString(),
-                    // imageUrl: item.imageUrl,
-                    group: groupName,
+                    group: item.group,
                   ),
                 )
                 .toList(),

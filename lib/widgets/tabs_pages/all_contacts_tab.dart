@@ -58,13 +58,12 @@ class _AllContactsTabState extends State<AllContactsTab> {
 
   @override
   Widget build(BuildContext context) {
-
     return ValueListenableBuilder(
       valueListenable: Hive.box<ContactList>(contactListBoxName).listenable(),
       builder: (_, box, __) => box.values.isEmpty
           ? const EmptyWidget()
           : AlphabeticScrollPage(
-              items: box.values.first.contacts.map((e) => e.name).toList(),
+              contacts: box.values.first.contacts,
             ),
     );
   }

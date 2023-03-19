@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../models/contact.dart';
 import '../utils/custom_search_delegate.dart';
 
 class SearchTile extends StatelessWidget {
+  final List<Contact> contacts;
   const SearchTile({
     super.key,
+    required this.contacts,
   });
 
   @override
@@ -16,7 +19,7 @@ class SearchTile extends StatelessWidget {
           onTap: () {
             showSearch(
               context: context,
-              delegate: CustomSearchDelegate(),
+              delegate: CustomSearchDelegate(contacts),
             );
           },
           shape: RoundedRectangleBorder(

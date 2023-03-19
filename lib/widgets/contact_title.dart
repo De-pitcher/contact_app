@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
+import '../models/group.dart';
 import '../utils/app_color.dart';
 import 'contact_details_widget.dart';
 
@@ -9,7 +10,7 @@ class ContactTile extends StatelessWidget {
   final String name;
   final String number;
   final Uint8List? imageUrl;
-  final String? group;
+  final Group? group;
   const ContactTile({
     super.key,
     required this.name,
@@ -32,7 +33,7 @@ class ContactTile extends StatelessWidget {
                 imageUrl: imageUrl,
                 number: number.toString(),
                 location: 'Location',
-                group: group,
+                group: groupString[group],
               ),
             ),
           );
