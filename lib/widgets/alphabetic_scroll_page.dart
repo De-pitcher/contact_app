@@ -1,5 +1,5 @@
 import 'package:azlistview/azlistview.dart';
-import 'package:contact_app/widgets/contact_title.dart';
+import 'package:contact_app/widgets/contact_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 

@@ -5,7 +5,7 @@ import '../../constants/constants.dart';
 import '../../models/contact.dart';
 import '../../models/contact_list.dart';
 import '../alphabetic_scroll_page.dart';
-import '../contact_title.dart';
+import '../contact_tile.dart';
 import '../empty_widget.dart';
 
 class AllContactsTab extends StatefulWidget {

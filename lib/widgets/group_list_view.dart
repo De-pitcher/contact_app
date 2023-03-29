@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/contact.dart';
-import './contact_title.dart';
+import 'contact_tile.dart';
 
 class GroupListView extends StatelessWidget {
   final List<Contact> groupContacts;

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/group.dart';
-import '../utils/app_color.dart';
 import 'contact_details_widget.dart';
 
 class ContactTile extends StatelessWidget {
@@ -55,14 +54,9 @@ class ContactTile extends StatelessWidget {
             ),
           );
         },
-        leading: CircleAvatar(
-          // child: Image.asset(imageUrl),
+        leading: tag == '#' ? null : CircleAvatar(
           backgroundColor: bgColor,
           child: imageUrl == null || imageUrl!.isEmpty
-              // ? const Icon(
-              //     Icons.person,
-              //     color: AppColor.primary,
-              //   )
               ? Text(tag)
               : Image.memory(imageUrl!),
         ),

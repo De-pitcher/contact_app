@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/contact.dart';
-import '../widgets/contact_title.dart';
+import '../widgets/contact_tile.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   final List<Contact> searchItems;
