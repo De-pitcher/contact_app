@@ -1,4 +1,4 @@
-import 'package:contact_app/utils/app_color.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -9,6 +9,7 @@ import 'models/contact.dart';
 import 'models/contact_list.dart';
 import 'models/group.dart';
 import 'screens/my_home_screen.dart';
+import 'utils/app_color.dart';
 
 class PermisionChecker extends StatefulWidget {
   const PermisionChecker({super.key});
@@ -29,29 +30,69 @@ class _PermisionCheckerState extends State<PermisionChecker> {
     }
   }
 
-  Future<bool> _initialzedContacts() async {
-    await local.ContactsService.getContacts(withThumbnails: false).then((data) {
-      if (data.isEmpty) {
-        final contactBox = Hive.box<ContactList>(contactListBoxName);
-        if (data.length > contactBox.length) {
-          final contacts = data.map((value) {
-            final name = value.givenName ?? value.displayName ?? 'Unknown';
-            final number = value.phones == null || value.phones!.isEmpty
-                ? ''
-                : value.phones!.first.value ?? '';
-            return Contact(
-              name: name,
-              number: number.startsWith(name.characters.first) ? '' : number,
-              group: Group.non,
-            );
-          }).toList();
+  Future _initialzedContacts() async {
+    return local.ContactsService.getContacts(withThumbnails: false).then((data) {
+      final contactBox = Hive.box<ContactList>(contactListBoxName);
+      // print('ContactApp debug: ${data.length}');
+      // print('ContactApp debug: ${contactBox.length}');
+      final contacts = data.map((value) {
+        final name = value.givenName ?? value.displayName ?? 'Unknown';
+        final number = value.phones == null || value.phones!.isEmpty
+            ? ''
+            : value.phones!.first.value ?? '';
+        return Contact(
+          name: name,
+          number: number.startsWith(name.characters.first) ? '' : number,
+          group: Group.non,
+        );
+      }).toList();
 
-          contactBox.put('contact', ContactList(contacts));
-          return false;
+      contactBox.put('contact', ContactList(contacts)).then((value) {
+        if (kDebugMode) {
+          print('ContactApp debug: Contact successfully added!');
         }
-      }
+      }).onError((error, stackTrace) {
+        if (kDebugMode) {
+          print('ContactApp debug: Contact was not added!');
+        }
+      });
     });
-    return true;
+  }
+
+  Future<bool> _shouldInitialize() async {
+    final contactBox = Hive.box<ContactList>(contactListBoxName);
+    bool result = false;
+
+    if (contactBox.isEmpty) {
+      if (kDebugMode) {
+        print('Debug: ===> isEmpty');
+      }
+
+      result = true;
+    } else {
+      if (kDebugMode) {
+        print('Debug: ===> IsNotEmpty');
+      }
+      await local.ContactsService.getContacts(withThumbnails: false)
+          .then((data) {
+        final shouldUpdate =
+            data.length > contactBox.values.first.contacts.length;
+        if (shouldUpdate) {
+          if (kDebugMode) {
+            print('Debug: ===> shouldUpdate');
+          }
+          result = true;
+        } else {
+          if (kDebugMode) {
+            print('Debug: ===> shouldNotUpdate');
+          }
+
+          result = false;
+        }
+      });
+    }
+    if (result) await _initialzedContacts();
+    return result;
   }
 
   void _handleInvalidPermissions(
@@ -81,19 +122,20 @@ class _PermisionCheckerState extends State<PermisionChecker> {
         } else if (permissionSnapshot.hasData) {
           _handleInvalidPermissions(permissionSnapshot.data!);
           if (permissionSnapshot.data! == PermissionStatus.granted) {
-            _initialzedContacts();
             return FutureBuilder(
-              future: _initialzedContacts(),
+              future: _shouldInitialize(),
               builder: (ctx, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const LoadingWidget(info: 'Initializing Contacts');
                 }
                 if (snapshot.hasData) {
-                  if (snapshot.data!) {
-                    return const MyHomeScreen();
-                  }
+                  return const MyHomeScreen();
                 }
-                return const Text('Could\'nt load contacts');
+                return const Scaffold(
+                  body: Center(
+                    child: Text('Could\'nt load contacts'),
+                  ),
+                );
               },
             );
           }

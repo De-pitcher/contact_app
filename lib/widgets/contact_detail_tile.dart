@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'icon_card.dart';
-
 class ContactDetailTile extends StatelessWidget {
   final String title;
   final String? subtitle;

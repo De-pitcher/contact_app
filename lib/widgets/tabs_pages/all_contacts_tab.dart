@@ -48,7 +48,11 @@ class _AllContactsTabState extends State<AllContactsTab> {
     }
     for (var contact in contacts) {
       normalList.add(
-        ContactTile(name: contact.name, number: contact.name),
+        ContactTile(
+          name: contact.name,
+          number: contact.name,
+          tag: contact.getSuspensionTag(),
+        ),
       );
       strList.add(contact.name);
     }

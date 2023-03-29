@@ -38,6 +38,7 @@ class GroupListView extends StatelessWidget {
                     name: item.name,
                     number: item.number.toString(),
                     group: item.group,
+                    tag: '',
                   ),
                 )
                 .toList(),

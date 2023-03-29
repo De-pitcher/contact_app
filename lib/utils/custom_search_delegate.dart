@@ -4,20 +4,9 @@ import '../models/contact.dart';
 import '../widgets/contact_title.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
-// Demo list to show querying
   final List<Contact> searchItems;
 
   CustomSearchDelegate(this.searchItems);
-  // [
-  //   "Apple",
-  //   "Banana",
-  //   "Mango",
-  //   "Pear",
-  //   "Watermelons",
-  //   "Blueberries",
-  //   "Pineapples",
-  //   "Strawberries"
-  // ];
 
 // first overwrite to
 // clear the search text
@@ -65,6 +54,7 @@ class CustomSearchDelegate extends SearchDelegate {
           name: contact.name,
           number: contact.number,
           group: contact.group,
+          tag: contact.getSuspensionTag(),
         );
       },
     );
@@ -88,6 +78,7 @@ class CustomSearchDelegate extends SearchDelegate {
           name: contact.name,
           number: contact.number,
           group: contact.group,
+          tag: contact.getSuspensionTag(),
         );
       },
     );

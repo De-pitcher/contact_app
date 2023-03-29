@@ -17,5 +17,17 @@ class Contact extends ISuspensionBean {
   Contact({required this.name, required this.number, required this.group});
 
   @override
-  String getSuspensionTag() => name[0].toUpperCase();
+  String getSuspensionTag() {
+    String result = '#';
+    if (name.toUpperCase().contains(RegExp(r'[A-Z]'))) {
+      if (name[0].codeUnitAt(0) == 8206) {
+        result = name[1];
+      } else if (int.tryParse(name[0]) != null) {
+        result = '#';
+      } else {
+        result = name[0];
+      }
+    }
+    return result;
+  }
 }

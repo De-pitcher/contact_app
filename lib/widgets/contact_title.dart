@@ -1,6 +1,8 @@
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/group.dart';
 import '../utils/app_color.dart';
@@ -9,6 +11,7 @@ import 'contact_details_widget.dart';
 class ContactTile extends StatelessWidget {
   final String name;
   final String number;
+  final String tag;
   final Uint8List? imageUrl;
   final Group? group;
   const ContactTile({
@@ -16,16 +19,30 @@ class ContactTile extends StatelessWidget {
     required this.name,
     required this.number,
     this.imageUrl,
-    this.group,
+    this.group, required this.tag,
   });
+
+  void _launchDialer(String number) async {
+    print('Debug (check number): $number');
+
+    final url = Uri(scheme: 'tel', path: number);
+    if (!await launchUrl(url)) {
+      throw 'Application unable to open dialer.';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // print(' - Name => $name');
+
+    var bgColor =
+        Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       elevation: 0,
       child: ListTile(
         onTap: () {
+          // _launchDialer(number == '' ? name : number);
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => ContactDetailsWidget(
@@ -40,12 +57,13 @@ class ContactTile extends StatelessWidget {
         },
         leading: CircleAvatar(
           // child: Image.asset(imageUrl),
-          backgroundColor: AppColor.accentColor,
+          backgroundColor: bgColor,
           child: imageUrl == null || imageUrl!.isEmpty
-              ? const Icon(
-                  Icons.person,
-                  color: AppColor.primary,
-                )
+              // ? const Icon(
+              //     Icons.person,
+              //     color: AppColor.primary,
+              //   )
+              ? Text(tag)
               : Image.memory(imageUrl!),
         ),
         title: Text(name),
