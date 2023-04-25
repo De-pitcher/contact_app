@@ -3,9 +3,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../constants/constants.dart';
 import '../models/contact_list.dart';
-import '../utils/custom_nav_bar.dart';
 import '../widgets/search_tile.dart';
-import '../widgets/tabs_pages/all_contacts_tab.dart';
+import '../widgets/all_contacts_widget.dart';
 
 class MyHomeScreen extends StatefulWidget {
   static const id = '/home';
@@ -16,21 +15,6 @@ class MyHomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    // RecentTab(),
-    // GroupTab(),
-    AllContactsTab(),
-    Text('Profile Page',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-  ];
 
 
   @override
@@ -48,11 +32,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                   .contacts),
         ),
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: CustomNavBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
-      ),
+      body: const AllContactsTab(),
     );
   }
 }

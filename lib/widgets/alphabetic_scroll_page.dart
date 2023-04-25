@@ -1,9 +1,9 @@
 import 'package:azlistview/azlistview.dart';
-import 'package:contact_app/widgets/contact_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../models/contact.dart';
+import 'contact_tile.dart';
 
 class CustomSuspensionUtil extends SuspensionUtil {
   static void sortListBySuspensionTag(List<ISuspensionBean>? list) {
