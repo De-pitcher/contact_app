@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/group.dart';
 import 'contact_details_widget.dart';
 
+
 class ContactTile extends StatelessWidget {
   final String name;
   final String number;
