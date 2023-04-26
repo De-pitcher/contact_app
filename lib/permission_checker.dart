@@ -31,7 +31,8 @@ class _PermisionCheckerState extends State<PermisionChecker> {
   }
 
   Future _initialzedContacts() async {
-    return local.ContactsService.getContacts(withThumbnails: false).then((data) {
+    return local.ContactsService.getContacts(withThumbnails: false)
+        .then((data) {
       final contactBox = Hive.box<ContactList>(contactListBoxName);
       // print('ContactApp debug: ${data.length}');
       // print('ContactApp debug: ${contactBox.length}');
@@ -47,7 +48,7 @@ class _PermisionCheckerState extends State<PermisionChecker> {
         );
       }).toList();
 
-      contactBox.put('contact', ContactList(contacts)).then((value) {
+      contactBox.put(contactsBoxName, ContactList(contacts)).then((value) {
         if (kDebugMode) {
           print('ContactApp debug: Contact successfully added!');
         }
@@ -102,7 +103,7 @@ class _PermisionCheckerState extends State<PermisionChecker> {
       const snackBar = SnackBar(content: Text('Access to contact data denied'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else if (permissionStatus == PermissionStatus.granted) {
-      Hive.box<bool>(permissionStatusBoxName).put('permission', true);
+      Hive.box<bool>(permissionStatusBoxName).put(permissionStatusBoxName, true);
     } else if (permissionStatus == PermissionStatus.permanentlyDenied) {
       const snackBar =
           SnackBar(content: Text('Contact data not available on device'));

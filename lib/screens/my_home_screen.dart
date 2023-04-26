@@ -6,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../constants/constants.dart';
 import '../models/contact_list.dart';
 import '../widgets/search_tile.dart';
-import '../widgets/all_contacts_widget.dart';
+import '../widgets/contact_list_widget.dart';
 
 class MyHomeScreen extends StatefulWidget {
   static const id = '/home';
@@ -37,14 +37,17 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(70),
-          child: SearchTile(
-              contacts: Hive.box<ContactList>(contactListBoxName)
-                  .values
-                  .first
-                  .contacts),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SearchTile(
+                contacts: Hive.box<ContactList>(contactListBoxName)
+                    .values
+                    .first
+                    .contacts),
+          ),
         ),
       ),
-      body: const AllContactsTab(),
+      body: const ContactListWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)

@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           ? const PermisionChecker()
           : permissionBox
               ? const MyHomeScreen()
-              : Container(),
+              : const PermisionChecker(),
       routes: {
         MyHomeScreen.id: (_) => const MyHomeScreen(),
       },
