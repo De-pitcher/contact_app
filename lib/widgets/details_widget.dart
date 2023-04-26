@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class DetailsWidget extends StatelessWidget {
   final String title;
   final double height;
@@ -19,6 +18,7 @@ class DetailsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Divider(),
           SizedBox(
             width: double.infinity,
             child: Padding(
@@ -35,7 +35,6 @@ class DetailsWidget extends StatelessWidget {
           Column(
             children: [
               ...children,
-              const Divider(),
             ],
           ),
         ],

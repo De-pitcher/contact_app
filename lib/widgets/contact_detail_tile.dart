@@ -16,7 +16,10 @@ class ContactDetailTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListTile(
-        title: Text(title),
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         subtitle: subtitle == null ? null : Text(subtitle!),
         trailing: trailing,
       ),

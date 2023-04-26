@@ -27,7 +27,10 @@ class SearchTile extends StatelessWidget {
           ),
           leading: const Icon(Icons.search),
           horizontalTitleGap: 0,
-          title: const Text('Search by name or number'),
+          title: Text(
+            'Search by name or number',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
         ),
       ),
     );

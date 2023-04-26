@@ -9,6 +9,7 @@ import 'icon_card.dart';
 class ContactDetailsWidget extends StatelessWidget {
   final String name;
   final Uint8List? imageUrl;
+  final Color color;
   final String number;
   final String location;
   final String? email;
@@ -21,19 +22,15 @@ class ContactDetailsWidget extends StatelessWidget {
     required this.location,
     this.email,
     this.group,
+    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Contacts',
-          style: Theme.of(context)
-              .textTheme
-              .headlineMedium!
-              .copyWith(color: Colors.black),
-        ),
+        backgroundColor: Theme.of(context).appBarTheme.foregroundColor,
+        foregroundColor: Theme.of(context).appBarTheme.backgroundColor,
         actions: const [
           Icon(
             Icons.more_vert,
@@ -49,22 +46,24 @@ class ContactDetailsWidget extends StatelessWidget {
                 tag: const Key('UserImage'),
                 child: CircleAvatar(
                   radius: 50,
+                  backgroundColor: color,
                   child: imageUrl == null || imageUrl!.isEmpty
-                      ? const Icon(Icons.person)
+                      ? Text(
+                          name.substring(0, 1),
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        )
                       : Image.memory(
                           imageUrl!,
                           fit: BoxFit.cover,
                         ),
                 ),
               ),
-              Text(
-                location,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              const SizedBox(height: 20),
               Text(
                 name,
-                style: Theme.of(context).textTheme.titleLarge,
-              )
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                    color: Theme.of(context).appBarTheme.backgroundColor),
+              ),
             ],
           ),
         ),
@@ -115,11 +114,7 @@ class ContactDetailsWidget extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: const [
-                        IconCard(
-                          icon: Icons.telegram,
-                          iconColor: Colors.white,
-                          color: Colors.blue,
-                        ),
+                        IconCard(icon: Icons.telegram),
                       ],
                     ),
                   ),
@@ -127,11 +122,7 @@ class ContactDetailsWidget extends StatelessWidget {
                 ContactDetailTile(
                   title: 'WhatsApp',
                   subtitle: number,
-                  trailing: const IconCard(
-                    icon: Icons.wechat,
-                    iconColor: Colors.white,
-                    color: Colors.green,
-                  ),
+                  trailing: const IconCard(icon: Icons.wechat),
                 ),
               ],
             ),
