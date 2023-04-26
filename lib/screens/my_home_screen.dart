@@ -3,9 +3,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../constants/constants.dart';
 import '../models/contact_list.dart';
-import '../utils/custom_nav_bar.dart';
 import '../widgets/search_tile.dart';
-import '../widgets/tabs_pages/all_contacts_tab.dart';
+import '../widgets/all_contacts_widget.dart';
 
 class MyHomeScreen extends StatefulWidget {
   static const id = '/home';
@@ -16,29 +15,24 @@ class MyHomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    // RecentTab(),
-    // GroupTab(),
-    AllContactsTab(),
-    Text('Profile Page',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-  ];
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text('Contact App'),
+        title: Text(
+          'Contacts',
+          style: Theme.of(context)
+              .textTheme
+              .headlineMedium!
+              .copyWith(color: Theme.of(context).scaffoldBackgroundColor),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(70),
           child: SearchTile(
@@ -48,10 +42,10 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                   .contacts),
         ),
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: CustomNavBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
+      body: const AllContactsTab(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
       ),
     );
   }

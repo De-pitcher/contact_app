@@ -15,7 +15,13 @@ class SearchTile extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Card(
+        elevation: 0,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         child: ListTile(
+          tileColor: Theme.of(context).scaffoldBackgroundColor,
           onTap: () {
             showSearch(
               context: context,
@@ -25,9 +31,15 @@ class SearchTile extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          leading: const Icon(Icons.search),
+          leading: Icon(
+            Icons.search,
+            color: Theme.of(context).appBarTheme.backgroundColor,
+          ),
           horizontalTitleGap: 0,
-          title: const Text('Search by name or number'),
+          title: Text(
+            'Search by name or number',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
         ),
       ),
     );

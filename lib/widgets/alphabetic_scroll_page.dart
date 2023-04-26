@@ -1,9 +1,10 @@
 import 'package:azlistview/azlistview.dart';
-import 'package:contact_app/widgets/contact_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../models/contact.dart';
+import '../utils/app_color.dart';
+import 'contact_tile.dart';
 
 class CustomSuspensionUtil extends SuspensionUtil {
   static void sortListBySuspensionTag(List<ISuspensionBean>? list) {
@@ -115,13 +116,21 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: alphabets[value == -1 ? 0 : value] == alpha
-                              ? Colors.blue
+                              ? Theme.of(context).colorScheme.secondary
                               : null,
                         ),
                         child: Center(
                           child: Text(
                             alpha,
-                            style: const TextStyle(fontSize: 14),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    color: alphabets[value == -1 ? 0 : value] ==
+                                            alpha
+                                        ? Theme.of(context)
+                                            .scaffoldBackgroundColor
+                                        : null),
                           ),
                         ),
                       ),
@@ -168,7 +177,6 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
         margin: const EdgeInsets.only(right: 16.0),
         padding: const EdgeInsets.only(left: 16.0),
         alignment: Alignment.centerLeft,
-        // color: Colors.grey[300],
         child: Text(
           tag,
           softWrap: false,
