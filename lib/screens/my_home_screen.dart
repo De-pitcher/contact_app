@@ -1,3 +1,5 @@
+import 'package:contact_app/screens/add_contact_screen.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -47,7 +49,10 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       ),
       body: const ContactListWidget(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => const AddContact()));
+        },
         child: const Icon(Icons.add),
       ),
     );
