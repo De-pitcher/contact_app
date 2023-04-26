@@ -18,54 +18,74 @@ class AppTheme {
       listTileTheme: const ListTileThemeData(
         tileColor: AppColor.secondary,
       ),
-      cardTheme: CardTheme(
-        margin: const EdgeInsets.only(
-          right: 20.0,
-          left: 20.0,
-          bottom: 10.0,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        elevation: 10,
-      ),
-      textTheme: TextTheme(
-        bodyLarge: Theme.of(context)
-            .textTheme
-            .bodyLarge!
-            .copyWith(color: AppColor.color2),
-        bodyMedium: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: AppColor.color2),
-        headlineLarge: Theme.of(context)
-            .textTheme
-            .headlineLarge!
-            .copyWith(color: AppColor.color2),
-        headlineMedium: Theme.of(context)
-            .textTheme
-            .headlineMedium!
-            .copyWith(color: AppColor.color2),
-        titleLarge: Theme.of(context)
-            .textTheme
-            .titleLarge!
-            .copyWith(color: AppColor.color2),
-      ),
+      textTheme: AppTextTheme.lightTextTheme(context),
     );
   }
 
-  static ThemeData dark() {
-    return ThemeData.light().copyWith(
-      appBarTheme: const AppBarTheme(
-        // backgroundColor: Color(0xFF0A132E),
-        backgroundColor: AppColor.color2,
-        elevation: 0,
-        foregroundColor: Color(0xFFD3DEFF),
-      ),
-      scaffoldBackgroundColor: const Color(0xFFD3DEFF),
-      canvasColor: const Color(0xFF4d4dff),
-      listTileTheme: const ListTileThemeData(
-          tileColor: Color(0xFFD3DEFF), style: ListTileStyle.list),
+  static ThemeData dark(BuildContext context) {
+    return ThemeData.dark().copyWith(
+        appBarTheme: const AppBarTheme(
+          // backgroundColor: Color(0xFF0A132E),
+          backgroundColor: AppColor.color2,
+          elevation: 0,
+          foregroundColor: Color(0xFFD3DEFF),
+        ),
+        scaffoldBackgroundColor: const Color(0xFFD3DEFF),
+        canvasColor: const Color(0xFF4d4dff),
+        listTileTheme: const ListTileThemeData(
+            tileColor: Color(0xFFD3DEFF), style: ListTileStyle.list),
+        textTheme: AppTextTheme.darkTextTheme(context));
+  }
+}
+
+class AppTextTheme {
+  static TextTheme lightTextTheme(BuildContext context) {
+    return TextTheme(
+      bodyLarge: Theme.of(context)
+          .textTheme
+          .bodyLarge!
+          .copyWith(color: AppColor.color2),
+      bodyMedium: Theme.of(context)
+          .textTheme
+          .bodyMedium!
+          .copyWith(color: AppColor.color2),
+      headlineLarge: Theme.of(context)
+          .textTheme
+          .headlineLarge!
+          .copyWith(color: AppColor.color2),
+      headlineMedium: Theme.of(context)
+          .textTheme
+          .headlineMedium!
+          .copyWith(color: AppColor.color2),
+      titleLarge: Theme.of(context)
+          .textTheme
+          .titleLarge!
+          .copyWith(color: AppColor.color2),
+    );
+  }
+
+  static TextTheme darkTextTheme(BuildContext context) {
+    return TextTheme(
+      bodyLarge: Theme.of(context)
+          .textTheme
+          .bodyLarge!
+          .copyWith(color: AppColor.color2),
+      bodyMedium: Theme.of(context)
+          .textTheme
+          .bodyMedium!
+          .copyWith(color: AppColor.color2),
+      headlineLarge: Theme.of(context)
+          .textTheme
+          .headlineLarge!
+          .copyWith(color: AppColor.color2),
+      headlineMedium: Theme.of(context)
+          .textTheme
+          .headlineMedium!
+          .copyWith(color: AppColor.color2),
+      titleLarge: Theme.of(context)
+          .textTheme
+          .titleLarge!
+          .copyWith(color: AppColor.color2),
     );
   }
 }

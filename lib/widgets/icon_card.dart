@@ -17,7 +17,7 @@ class IconCard extends StatelessWidget {
       height: 40,
       width: 40,
       child: Card(
-        elevation: 10,
+        elevation: 0,
         color: color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

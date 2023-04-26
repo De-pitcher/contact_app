@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../models/contact.dart';
 import '../widgets/contact_tile.dart';
-import 'app_color.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   final List<Contact> searchItems;
