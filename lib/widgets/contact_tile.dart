@@ -39,8 +39,11 @@ class ContactTile extends StatelessWidget {
         Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      color: Theme.of(context).scaffoldBackgroundColor,
       elevation: 0,
       child: ListTile(
+        tileColor: Theme.of(context).scaffoldBackgroundColor,
+
         onTap: () {
           // _launchDialer(number == '' ? name : number);
           Navigator.of(context).push(

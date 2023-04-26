@@ -29,8 +29,7 @@ class ContactDetailsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).appBarTheme.foregroundColor,
-        foregroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         actions: const [
           Icon(
             Icons.more_vert,

@@ -16,6 +16,7 @@ class ContactDetailTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListTile(
+        tileColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text(
           title,
           style: Theme.of(context).textTheme.bodyLarge,

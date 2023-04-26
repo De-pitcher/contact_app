@@ -25,7 +25,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           style: Theme.of(context)
               .textTheme
               .headlineMedium!
-              .copyWith(color: Theme.of(context).appBarTheme.foregroundColor),
+              .copyWith(color: Theme.of(context).scaffoldBackgroundColor),
         ),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -43,6 +43,10 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         ),
       ),
       body: const AllContactsTab(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

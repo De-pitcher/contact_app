@@ -16,12 +16,12 @@ class SearchTile extends StatelessWidget {
       width: double.infinity,
       child: Card(
         elevation: 0,
-        color: Theme.of(context).appBarTheme.foregroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
         child: ListTile(
-          // tileColor: Theme.of(context).appBarTheme.foregroundColor,
+          tileColor: Theme.of(context).scaffoldBackgroundColor,
           onTap: () {
             showSearch(
               context: context,
