@@ -46,7 +46,7 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
   ];
 
   final ValueNotifier<int> _currentIndex = ValueNotifier(0);
-  final ItemScrollController _itemScrollContainer = ItemScrollController();
+  final ItemScrollController _itemScrollController = ItemScrollController();
   final ItemPositionsListener _itemPositionsListener =
       ItemPositionsListener.create();
 
@@ -60,7 +60,7 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
     setState(() {
       final index = contacts
           .indexWhere((element) => element.getSuspensionTag() == searchLetter);
-      if (index >= 0) _itemScrollContainer.jumpTo(index: index);
+      if (index >= 0) _itemScrollController.jumpTo(index: index);
     });
   }
 
@@ -145,7 +145,7 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
   Widget _list(Orientation orientation) => ScrollablePositionedList.builder(
         itemCount: contacts.length,
         itemBuilder: (_, index) => _buildListItem(contacts[index]),
-        itemScrollController: _itemScrollContainer,
+        itemScrollController: _itemScrollController,
         itemPositionsListener: _itemPositionsListener,
         reverse: false,
         scrollDirection: orientation == Orientation.portrait
