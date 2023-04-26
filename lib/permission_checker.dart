@@ -5,9 +5,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart' as local;
 
 import 'constants/constants.dart';
-import 'models/contact.dart';
+import 'data/hive_db.dart';
 import 'models/contact_list.dart';
-import 'models/group.dart';
 import 'screens/my_home_screen.dart';
 import 'utils/app_color.dart';
 
@@ -31,33 +30,8 @@ class _PermisionCheckerState extends State<PermisionChecker> {
   }
 
   Future _initialzedContacts() async {
-    return local.ContactsService.getContacts(withThumbnails: false)
-        .then((data) {
-      final contactBox = Hive.box<ContactList>(contactListBoxName);
-      // print('ContactApp debug: ${data.length}');
-      // print('ContactApp debug: ${contactBox.length}');
-      final contacts = data.map((value) {
-        final name = value.givenName ?? value.displayName ?? 'Unknown';
-        final number = value.phones == null || value.phones!.isEmpty
-            ? ''
-            : value.phones!.first.value ?? '';
-        return Contact(
-          name: name,
-          number: number.startsWith(name.characters.first) ? '' : number,
-          group: Group.non,
-        );
-      }).toList();
-
-      contactBox.put(contactsBoxName, ContactList(contacts)).then((value) {
-        if (kDebugMode) {
-          print('ContactApp debug: Contact successfully added!');
-        }
-      }).onError((error, stackTrace) {
-        if (kDebugMode) {
-          print('ContactApp debug: Contact was not added!');
-        }
-      });
-    });
+    HiveDb().getContacts(
+        await local.ContactsService.getContacts(withThumbnails: false));
   }
 
   Future<bool> _shouldInitialize() async {
@@ -103,7 +77,8 @@ class _PermisionCheckerState extends State<PermisionChecker> {
       const snackBar = SnackBar(content: Text('Access to contact data denied'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else if (permissionStatus == PermissionStatus.granted) {
-      Hive.box<bool>(permissionStatusBoxName).put(permissionStatusBoxName, true);
+      Hive.box<bool>(permissionStatusBoxName)
+          .put(permissionStatusBoxName, true);
     } else if (permissionStatus == PermissionStatus.permanentlyDenied) {
       const snackBar =
           SnackBar(content: Text('Contact data not available on device'));

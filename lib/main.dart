@@ -2,22 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'constants/constants.dart';
+import 'data/hive_db.dart';
 import 'models/contact.dart';
 import 'models/contact_list.dart';
-import 'models/group.dart';
 import 'permission_checker.dart';
 import 'screens/my_home_screen.dart';
 import 'utils/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  Hive.registerAdapter<Contact>(ContactAdapter());
-  Hive.registerAdapter<ContactList>(ContactListAdapter());
-  Hive.registerAdapter<Group>(GroupAdapter());
-  Hive.openBox<bool>(permissionStatusBoxName);
-  await Hive.openBox<Contact>(contactsBoxName);
-  await Hive.openBox<ContactList>(contactListBoxName);
+  HiveDb hiveDb = HiveDb();
+  await hiveDb.initializeBoxes();
+
 
   runApp(const MyApp());
 }
@@ -27,15 +23,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final permissionBox =
-        Hive.box<bool>(permissionStatusBoxName).get(permissionStatusBoxName);
+    final permissionStatus = HiveDb().getPermission();
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark(context),
-      home: permissionBox == null
+      home: permissionStatus == null
           ? const PermisionChecker()
-          : permissionBox
+          : permissionStatus
               ? const MyHomeScreen()
               : const PermisionChecker(),
       routes: {
