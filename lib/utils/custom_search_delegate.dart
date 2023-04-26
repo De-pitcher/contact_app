@@ -41,9 +41,9 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     List<Contact> matchQuery = [];
-    for (var fruit in searchItems) {
-      if (fruit.name.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
+    for (var item in searchItems) {
+      if (item.name.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(item);
       }
     }
     return ListView.builder(

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../models/contact.dart';
-import '../utils/app_color.dart';
 import 'contact_tile.dart';
 
 class CustomSuspensionUtil extends SuspensionUtil {
