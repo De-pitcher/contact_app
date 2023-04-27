@@ -11,17 +11,26 @@ class AddContact extends StatefulWidget {
 }
 
 class _AddContactState extends State<AddContact> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _firstNamecontroller = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   String? dropdownValue = groupString[Group.non];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.arrow_back),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: const Text('Create new contact'),
         actions: const [Icon(Icons.check)],
       ),
       body: Container(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             Row(
@@ -30,18 +39,23 @@ class _AddContactState extends State<AddContact> {
                 const SizedBox(
                   width: 5,
                 ),
-                Textfield(
-                  hint: 'FirstName',
-                  controller: _controller,
+                Expanded(
+                  child: Textfield(
+                    hint: 'FirstName',
+                    controller: _firstNamecontroller,
+                  ),
                 ),
               ],
             ),
             const SizedBox(
               height: 5,
             ),
-            Textfield(
-              hint: 'LastName',
-              controller: _controller,
+            Padding(
+              padding: const EdgeInsets.only(left: 25),
+              child: Textfield(
+                hint: 'LastName',
+                controller: _lastNameController,
+              ),
             ),
             const SizedBox(
               height: 5,
@@ -52,9 +66,11 @@ class _AddContactState extends State<AddContact> {
                 const SizedBox(
                   width: 5,
                 ),
-                Textfield(
-                  hint: 'Phone',
-                  controller: _controller,
+                Expanded(
+                  child: phoneTextField(
+                    hint: 'Phone',
+                    controller: _phoneController,
+                  ),
                 ),
               ],
             ),
@@ -67,29 +83,35 @@ class _AddContactState extends State<AddContact> {
                 const SizedBox(
                   width: 5,
                 ),
-                Textfield(
-                  hint: 'Email',
-                  controller: _controller,
+                Expanded(
+                  child: Textfield(
+                    hint: 'Email',
+                    controller: _emailController,
+                  ),
                 ),
               ],
             ),
             const SizedBox(
               height: 5,
             ),
-            DropdownButtonFormField(
-              value: dropdownValue,
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownValue = newValue!;
-                });
-              },
-              items: groupString.values
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            Padding(
+              padding: const EdgeInsets.only(left: 25),
+              child: DropdownButtonFormField(
+                hint: const Text('select group'),
+                value: dropdownValue,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    dropdownValue = newValue!;
+                  });
+                },
+                items: groupString.values
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
             ),
           ],
         ),

@@ -1,5 +1,4 @@
 import 'package:contact_app/screens/add_contact_screen.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
