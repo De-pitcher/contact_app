@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../constants/constants.dart';
-import '../models/contact_list.dart';
 import '../models/group.dart';
 import 'hive_db_repository.dart';
 import '/models/contact.dart';
@@ -13,11 +12,11 @@ class HiveDb implements HiveDbRepository {
   Future initializeBoxes() async {
     await Hive.initFlutter();
     Hive.registerAdapter<Contact>(ContactAdapter());
-    Hive.registerAdapter<ContactList>(ContactListAdapter());
+    // Hive.registerAdapter<ContactList>(ContactListAdapter());
     Hive.registerAdapter<Group>(GroupAdapter());
     await Hive.openBox<bool>(permissionStatusBoxName);
     await Hive.openBox<Contact>(contactsBoxName);
-    await Hive.openBox<ContactList>(contactListBoxName);
+    // await Hive.openBox<ContactList>(contactListBoxName);
   }
 
   @override
@@ -43,11 +42,25 @@ class HiveDb implements HiveDbRepository {
         group: Group.non,
       );
     }).toList();
-    final contactBox = Hive.box<ContactList>(contactListBoxName);
-    await contactBox.put(contactsBoxName, ContactList(result));
+    final contactBox = Hive.box<Contact>(contactsBoxName);
+    await contactBox.putAll(result.asMap());
+
+    // final contactBox = Hive.box<ContactList>(contactListBoxName);
+    // await contactBox.put(contactsBoxName, ContactList(result));
   }
 
   @override
   List<Contact> getContacts() =>
-      Hive.box<ContactList>(contactListBoxName).values.first.contacts;
+      Hive.box<Contact>(contactsBoxName).values.toList();
+
+  @override
+  Future<int> createContact(String name, String number, String email, Group group) {
+    // final contactBox = Hive.box<ContactList>(contactListBoxName);
+    // final contacts = [...getContacts()];
+    // contacts.add(Contact(name: name, number: number, group: group));
+    // contactBox.put(getContacts().length + 1, ContactList(contacts));
+    final contactBox = Hive.box<Contact>(contactsBoxName);
+    return contactBox.add(Contact(name: name, number: number, group: group));
+   
+  }
 }
