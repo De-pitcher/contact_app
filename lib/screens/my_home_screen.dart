@@ -51,7 +51,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const AddContact()));
+              .push(MaterialPageRoute(builder: (_) => const AddContact()),);
         },
         child: const Icon(Icons.add),
       ),

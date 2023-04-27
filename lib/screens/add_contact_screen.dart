@@ -24,73 +24,96 @@ class _AddContactState extends State<AddContact> {
       body: Container(
         child: Column(
           children: [
-            Row(
-              children: [
-                const Icon(Icons.person),
-                const SizedBox(
-                  width: 5,
+            SizedBox(
+              width: 350,
+              height: 100,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: [
+                    const Icon(Icons.person),
+                    const SizedBox(width: 10),
+                    SizedBox(
+                      width: 350,
+                      height: 100,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Name',
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Textfield(
-                  hint: 'FirstName',
-                  controller: _controller,
-                ),
-              ],
+              ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            Textfield(
-              hint: 'LastName',
-              controller: _controller,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: [
-                const Icon(Icons.phone),
-                const SizedBox(
-                  width: 5,
-                ),
-                Textfield(
-                  hint: 'Phone',
-                  controller: _controller,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: [
-                const Icon(Icons.mail),
-                const SizedBox(
-                  width: 5,
-                ),
-                Textfield(
-                  hint: 'Email',
-                  controller: _controller,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            DropdownButtonFormField(
-              value: dropdownValue,
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownValue = newValue!;
-                });
-              },
-              items: groupString.values
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
+            // Row(
+            //   children: [
+            //     const Icon(Icons.person),
+            //     const SizedBox(
+            //       width: 5,
+            //     ),
+            //     // Textfield(
+            //     //   hint: 'FirstName',
+            //     //   controller: _controller,
+            //     // ),
+            //     TextField()
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
+            // Textfield(
+            //   hint: 'LastName',
+            //   controller: _controller,
+            // ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
+            // Row(
+            //   children: [
+            //     const Icon(Icons.phone),
+            //     const SizedBox(
+            //       width: 5,
+            //     ),
+            //     Textfield(
+            //       hint: 'Phone',
+            //       controller: _controller,
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
+            // Row(
+            //   children: [
+            //     const Icon(Icons.mail),
+            //     const SizedBox(
+            //       width: 5,
+            //     ),
+            //     Textfield(
+            //       hint: 'Email',
+            //       controller: _controller,
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
+            // DropdownButtonFormField(
+            //   value: dropdownValue,
+            //   onChanged: (String? newValue) {
+            //     setState(() {
+            //       dropdownValue = newValue!;
+            //     });
+            //   },
+            //   items: groupString.values
+            //       .map<DropdownMenuItem<String>>((String value) {
+            //     return DropdownMenuItem<String>(
+            //       value: value,
+            //       child: Text(value),
+            //     );
+            //   }).toList(),
+            // ),
           ],
         ),
       ),

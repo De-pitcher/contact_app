@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
-import 'constants/constants.dart';
 import 'data/hive_db.dart';
-import 'models/contact.dart';
-import 'models/contact_list.dart';
 import 'permission_checker.dart';
 import 'screens/my_home_screen.dart';
 import 'utils/app_theme.dart';
