@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../constants/constants.dart';
+import '../data/hive_db.dart';
 import '../models/contact_list.dart';
 import '../widgets/search_tile.dart';
 import '../widgets/contact_list_widget.dart';
@@ -38,19 +39,16 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           preferredSize: const Size.fromHeight(70),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SearchTile(
-                contacts: Hive.box<ContactList>(contactListBoxName)
-                    .values
-                    .first
-                    .contacts),
+            child: SearchTile(contacts: HiveDb().getContacts()),
           ),
         ),
       ),
       body: const ContactListWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const AddContact()));
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const AddContact()),
+          );
         },
         child: const Icon(Icons.add),
       ),
