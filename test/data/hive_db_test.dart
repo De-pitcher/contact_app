@@ -1,12 +1,14 @@
 import 'package:contact_app/constants/constants.dart';
 import 'package:contact_app/data/hive_db.dart';
 import 'package:contact_app/data/hive_db_repository.dart';
+import 'package:contact_app/models/contact.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_test/hive_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'constants.dart';
 import 'hive_db_test.mocks.dart';
 
 class MockHiveBox<T> extends Mock implements Box<T> {}
@@ -44,7 +46,7 @@ void main() {
       });
     });
   });
-  group('test getPermission', () {
+  group('test getPermission()', () {
     test('getPermisison to pass', () async {
       /// Arrange
       final permissonBox = MockMockHiveBox<bool>();
@@ -63,5 +65,20 @@ void main() {
       verify(permissonBox.get(permissionStatusBoxName));
     });
   });
-  
+
+  group('initializeContacts()', () {
+    test('initialize contacts to pass', () async {
+      /// Arrange
+      final contactBox = MockMockHiveBox<Contact>();
+
+      when(hiveInterface.openBox<Contact>(contactsBoxName))
+          .thenAnswer((_) async => contactBox);
+
+      /// Act
+      hiveDb.initializeContact(contacts);
+
+      /// Assert
+      verify(hiveInterface.openBox(contactsBoxName));
+    });
+  });
 }

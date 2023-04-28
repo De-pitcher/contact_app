@@ -44,7 +44,7 @@ class HiveDb implements HiveDbRepository {
     // final contactBox = Hive.box<ContactList>(contactListBoxName);
     // await contactBox.put(contactsBoxName, ContactList(result));
     
-    final contactBox = hive.box<Contact>(contactsBoxName);
+    final contactBox = await hive.openBox<Contact>(contactsBoxName);
     return contactBox.putAll(contacts.asMap());
 
   }

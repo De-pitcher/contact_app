@@ -14,7 +14,7 @@ class Contact extends ISuspensionBean {
   @HiveField(2, defaultValue: Group.non)
   Group group;
 
-  Contact({required this.name, required this.number, required this.group});
+  Contact({required this.name, required this.number, this.group = Group.non});
 
   @override
   String getSuspensionTag() {

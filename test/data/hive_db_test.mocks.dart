@@ -6,9 +6,9 @@
 import 'dart:async' as _i4;
 import 'dart:typed_data' as _i7;
 
-import 'package:contact_app/models/contact.dart' as _i9;
-import 'package:contact_app/models/group.dart' as _i10;
-import 'package:contacts_service/contacts_service.dart' as _i8;
+import 'package:contact_app/models/contact.dart' as _i8;
+import 'package:contact_app/models/group.dart' as _i9;
+import 'package:contacts_service/contacts_service.dart' as _i10;
 import 'package:hive/hive.dart' as _i2;
 import 'package:hive/src/box/default_compaction_strategy.dart' as _i6;
 import 'package:hive/src/box/default_key_comparator.dart' as _i5;
@@ -561,28 +561,29 @@ class MockMockHiveDb extends _i1.Mock implements _i3.MockHiveDb {
         returnValueForMissingStub: _i4.Future<void>.value(),
       ) as _i4.Future<void>);
   @override
-  _i4.Future<dynamic> initializeContact(List<_i8.Contact>? contacts) =>
+  _i4.Future<void> initializeContact(List<_i8.Contact>? contacts) =>
       (super.noSuchMethod(
         Invocation.method(
           #initializeContact,
           [contacts],
         ),
-        returnValue: _i4.Future<dynamic>.value(),
-      ) as _i4.Future<dynamic>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
   @override
-  List<_i9.Contact> getContacts() => (super.noSuchMethod(
+  List<_i8.Contact> getContacts() => (super.noSuchMethod(
         Invocation.method(
           #getContacts,
           [],
         ),
-        returnValue: <_i9.Contact>[],
-      ) as List<_i9.Contact>);
+        returnValue: <_i8.Contact>[],
+      ) as List<_i8.Contact>);
   @override
   _i4.Future<int> createContact(
     String? name,
     String? number,
     String? email,
-    _i10.Group? group,
+    _i9.Group? group,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -596,4 +597,13 @@ class MockMockHiveDb extends _i1.Mock implements _i3.MockHiveDb {
         ),
         returnValue: _i4.Future<int>.value(0),
       ) as _i4.Future<int>);
+  @override
+  List<_i8.Contact> toNormalContact(List<_i10.Contact>? contacts) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #toNormalContact,
+          [contacts],
+        ),
+        returnValue: <_i8.Contact>[],
+      ) as List<_i8.Contact>);
 }
