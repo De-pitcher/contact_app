@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import 'data/hive_db.dart';
 import 'permission_checker.dart';
@@ -7,7 +8,7 @@ import 'utils/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  HiveDb hiveDb = HiveDb();
+  HiveDb hiveDb = HiveDb(Hive);
   await hiveDb.initializeBoxes();
 
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final permissionStatus = HiveDb().getPermission();
+    final permissionStatus = HiveDb(Hive).getPermission();
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,

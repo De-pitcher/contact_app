@@ -8,24 +8,36 @@ import 'hive_db_repository.dart';
 import '/models/contact.dart';
 
 class HiveDb implements HiveDbRepository {
+  final HiveInterface hive;
+  const HiveDb(this.hive);
+
   @override
   Future initializeBoxes() async {
-    await Hive.initFlutter();
-    Hive.registerAdapter<Contact>(ContactAdapter());
+    await hive.initFlutter();
+    hive.registerAdapter<Contact>(ContactAdapter());
     // Hive.registerAdapter<ContactList>(ContactListAdapter());
-    Hive.registerAdapter<Group>(GroupAdapter());
-    await Hive.openBox<bool>(permissionStatusBoxName);
-    await Hive.openBox<Contact>(contactsBoxName);
+    hive.registerAdapter<Group>(GroupAdapter());
+    // await hive.openBox<bool>(permissionStatusBoxName);
+    // await hive.openBox<Contact>(contactsBoxName);
+    _openBox(permissionStatusBoxName);
+    _openBox(contactsBoxName);
     // await Hive.openBox<ContactList>(contactListBoxName);
   }
 
   @override
   bool? getPermission() =>
-      Hive.box<bool>(permissionStatusBoxName).get(permissionStatusBoxName);
+      hive.box<bool>(permissionStatusBoxName).get(permissionStatusBoxName);
 
   @override
-  void setPermission(bool value) => Hive.box<bool>(permissionStatusBoxName)
-      .put(permissionStatusBoxName, value);
+  Future<void> setPermission(bool value) async {
+    try {
+      // final permissionBox = await _openBox(permissionStatusBoxName);
+      final permissionBox = await hive.openBox(permissionStatusBoxName);
+      return permissionBox.put(permissionStatusBoxName, value);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 
   @override
   Future initializeContact(List<local.Contact> contacts) async {
@@ -42,7 +54,7 @@ class HiveDb implements HiveDbRepository {
         group: Group.non,
       );
     }).toList();
-    final contactBox = Hive.box<Contact>(contactsBoxName);
+    final contactBox = hive.box<Contact>(contactsBoxName);
     await contactBox.putAll(result.asMap());
 
     // final contactBox = Hive.box<ContactList>(contactListBoxName);
@@ -51,16 +63,25 @@ class HiveDb implements HiveDbRepository {
 
   @override
   List<Contact> getContacts() =>
-      Hive.box<Contact>(contactsBoxName).values.toList();
+      hive.box<Contact>(contactsBoxName).values.toList();
 
   @override
-  Future<int> createContact(String name, String number, String email, Group group) {
+  Future<int> createContact(
+      String name, String number, String email, Group group) {
     // final contactBox = Hive.box<ContactList>(contactListBoxName);
     // final contacts = [...getContacts()];
     // contacts.add(Contact(name: name, number: number, group: group));
     // contactBox.put(getContacts().length + 1, ContactList(contacts));
-    final contactBox = Hive.box<Contact>(contactsBoxName);
+    final contactBox = hive.box<Contact>(contactsBoxName);
     return contactBox.add(Contact(name: name, number: number, group: group));
-   
+  }
+
+  Future<Box> _openBox(String name) async {
+    try {
+      final box = await hive.openBox(name);
+      return box;
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }

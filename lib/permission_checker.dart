@@ -18,6 +18,8 @@ class PermisionChecker extends StatefulWidget {
 }
 
 class _PermisionCheckerState extends State<PermisionChecker> {
+  final HiveDb _hiveDb = HiveDb(Hive);
+
   Future<PermissionStatus> _getContactPermission() async {
     PermissionStatus permission = await Permission.contacts.status;
     if (permission != PermissionStatus.granted &&
@@ -30,7 +32,7 @@ class _PermisionCheckerState extends State<PermisionChecker> {
   }
 
   Future _initialzedContacts() async {
-    return HiveDb().initializeContact(
+    return _hiveDb.initializeContact(
         await local.ContactsService.getContacts(withThumbnails: false));
   }
 
@@ -77,7 +79,7 @@ class _PermisionCheckerState extends State<PermisionChecker> {
       const snackBar = SnackBar(content: Text('Access to contact data denied'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else if (permissionStatus == PermissionStatus.granted) {
-      HiveDb().setPermission(true);
+      _hiveDb.setPermission(true);
     } else if (permissionStatus == PermissionStatus.permanentlyDenied) {
       const snackBar =
           SnackBar(content: Text('Contact data not available on device'));

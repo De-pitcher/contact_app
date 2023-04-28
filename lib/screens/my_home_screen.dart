@@ -39,7 +39,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           preferredSize: const Size.fromHeight(70),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SearchTile(contacts: HiveDb().getContacts()),
+            child: SearchTile(contacts: HiveDb(Hive).getContacts()),
           ),
         ),
       ),

@@ -8,7 +8,7 @@ abstract class HiveDbRepository {
 
   bool? getPermission();
 
-  void setPermission(bool value);
+  Future<void> setPermission(bool value);
 
   Future initializeContact(List<local.Contact> contacts);
 
