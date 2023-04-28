@@ -32,8 +32,9 @@ class _PermisionCheckerState extends State<PermisionChecker> {
   }
 
   Future _initialzedContacts() async {
-    return _hiveDb.initializeContact(
+    final convertedContact = _hiveDb.toNormalContact(
         await local.ContactsService.getContacts(withThumbnails: false));
+    return _hiveDb.initializeContact(convertedContact);
   }
 
   Future<bool> _shouldInitialize() async {

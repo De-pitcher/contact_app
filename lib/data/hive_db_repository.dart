@@ -1,4 +1,3 @@
-import 'package:contacts_service/contacts_service.dart' as local;
 
 import '../models/contact.dart';
 import '../models/group.dart';
@@ -10,7 +9,7 @@ abstract class HiveDbRepository {
 
   Future<void> setPermission(bool value);
 
-  Future initializeContact(List<local.Contact> contacts);
+  Future<void> initializeContact(List<Contact> contacts);
 
   List<Contact> getContacts();
 

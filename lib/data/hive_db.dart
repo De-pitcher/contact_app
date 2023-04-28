@@ -40,25 +40,13 @@ class HiveDb implements HiveDbRepository {
   }
 
   @override
-  Future initializeContact(List<local.Contact> contacts) async {
-    List<Contact> result = [];
-
-    contacts.map((value) {
-      final name = value.givenName ?? value.displayName ?? 'Unknown';
-      final number = value.phones == null || value.phones!.isEmpty
-          ? ''
-          : value.phones!.first.value ?? '';
-      return Contact(
-        name: name,
-        number: number.startsWith(name.characters.first) ? '' : number,
-        group: Group.non,
-      );
-    }).toList();
-    final contactBox = hive.box<Contact>(contactsBoxName);
-    await contactBox.putAll(result.asMap());
-
+  Future<void> initializeContact(List<Contact> contacts) async {
     // final contactBox = Hive.box<ContactList>(contactListBoxName);
     // await contactBox.put(contactsBoxName, ContactList(result));
+    
+    final contactBox = hive.box<Contact>(contactsBoxName);
+    return contactBox.putAll(contacts.asMap());
+
   }
 
   @override
@@ -83,5 +71,19 @@ class HiveDb implements HiveDbRepository {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  List<Contact> toNormalContact(List<local.Contact> contacts) {
+    return contacts.map((value) {
+      final name = value.givenName ?? value.displayName ?? 'Unknown';
+      final number = value.phones == null || value.phones!.isEmpty
+          ? ''
+          : value.phones!.first.value ?? '';
+      return Contact(
+        name: name,
+        number: number.startsWith(name.characters.first) ? '' : number,
+        group: Group.non,
+      );
+    }).toList();
   }
 }
