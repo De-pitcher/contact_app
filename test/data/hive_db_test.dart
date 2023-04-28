@@ -81,4 +81,20 @@ void main() {
       verify(hiveInterface.openBox(contactsBoxName));
     });
   });
+
+  group('test getContacts()', () {
+    test('getCotacts() to pass', () async {
+      /// Arrange
+      final contactBox = MockMockHiveBox<Contact>();
+      when(hiveInterface.box<Contact>(contactsBoxName))
+          .thenAnswer((realInvocation) => contactBox);
+      when(contactBox.values).thenAnswer((_) => contacts);
+
+      /// Act
+      hiveDb.getContacts();
+
+      /// Assert
+      verify(hiveInterface.box<Contact>(contactsBoxName));
+    });
+  });
 }

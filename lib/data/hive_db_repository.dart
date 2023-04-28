@@ -1,4 +1,3 @@
-
 import '../models/contact.dart';
 import '../models/group.dart';
 
@@ -13,5 +12,10 @@ abstract class HiveDbRepository {
 
   List<Contact> getContacts();
 
-  Future<int> createContact(String name, String number, String email, Group group);
+  Future<int> createContact(
+    String name,
+    String number,
+    String email,
+    Group group,
+  );
 }

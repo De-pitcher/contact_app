@@ -598,7 +598,7 @@ class MockMockHiveDb extends _i1.Mock implements _i3.MockHiveDb {
         returnValue: _i4.Future<int>.value(0),
       ) as _i4.Future<int>);
   @override
-  List<_i8.Contact> toNormalContact(List<_i10.Contact>? contacts) =>
+  List<_i8.Contact> convertToContact(List<_i10.Contact>? contacts) =>
       (super.noSuchMethod(
         Invocation.method(
           #toNormalContact,
