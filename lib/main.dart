@@ -10,7 +10,7 @@ import 'widgets/empty_widget.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HiveDb hiveDb = HiveDb(Hive);
-  await hiveDb.initializeBoxes();
+  await hiveDb.initializeDb();
 
   runApp(const MyApp());
 }

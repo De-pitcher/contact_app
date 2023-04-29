@@ -2,15 +2,15 @@ import '../models/contact.dart';
 import '../models/group.dart';
 
 abstract class HiveDbRepository {
-  Future initializeBoxes();
-
-  bool? getPermission();
+  Future initializeDb();
 
   Future<void> setPermission(bool value);
 
+  bool? getPermission([String? name]);
+
   Future<void> initializeContact(List<Contact> contacts);
 
-  List<Contact> getContacts();
+  List<Contact> getContacts([String? name]);
 
   Future<int> createContact(
     String name,

@@ -15,11 +15,8 @@ class MockHiveBox<T> extends Mock implements Box<T> {}
 
 class MockHiveInterface extends Mock implements HiveInterface {}
 
-class MockHiveDb extends Mock implements HiveDb {}
-
 @GenerateMocks([MockHiveBox])
 @GenerateMocks([MockHiveInterface])
-@GenerateMocks([MockHiveDb])
 void main() {
   setUp(() async {
     await setUpTestHive();
@@ -52,6 +49,7 @@ void main() {
       final permissonBox = MockMockHiveBox<bool>();
       bool? answer = true;
 
+      when(hiveInterface.isBoxOpen(permissionStatusBoxName)).thenReturn(true);
       when(hiveInterface.box<bool>(permissionStatusBoxName))
           .thenAnswer((_) => permissonBox);
       when(permissonBox.get(permissionStatusBoxName))
@@ -61,8 +59,28 @@ void main() {
       hiveDb.getPermission();
 
       /// Assert
+      verify(hiveInterface.isBoxOpen(permissionStatusBoxName));
       verify(hiveInterface.box<bool>(permissionStatusBoxName));
       verify(permissonBox.get(permissionStatusBoxName));
+    });
+
+    test('getPermisison to fail', () async {
+      /// Arrange
+      final permissonBox = MockMockHiveBox<bool>();
+      const fakePermissionBoxName = 'permissionStatusBoxName';
+
+      when(hiveInterface.isBoxOpen(fakePermissionBoxName)).thenReturn(false);
+      when(hiveInterface.box<bool>(fakePermissionBoxName))
+          .thenThrow(Exception('This box does not exist'));
+      when(permissonBox.get(fakePermissionBoxName)).thenReturn(null);
+
+      /// Act
+      hiveDb.getPermission(fakePermissionBoxName);
+
+      /// Assert
+      verify(hiveInterface.isBoxOpen(fakePermissionBoxName));
+      verifyNever(hiveInterface.box<bool>(fakePermissionBoxName)).called(0);
+      verifyNever(permissonBox.get(fakePermissionBoxName)).called(0);
     });
   });
 
@@ -86,15 +104,34 @@ void main() {
     test('getCotacts() to pass', () async {
       /// Arrange
       final contactBox = MockMockHiveBox<Contact>();
+      when(hiveInterface.isBoxOpen(contactsBoxName)).thenReturn(true);
       when(hiveInterface.box<Contact>(contactsBoxName))
-          .thenAnswer((realInvocation) => contactBox);
+          .thenAnswer((_) => contactBox);
       when(contactBox.values).thenAnswer((_) => contacts);
 
       /// Act
       hiveDb.getContacts();
 
       /// Assert
+      verify(hiveInterface.isBoxOpen(contactsBoxName));
       verify(hiveInterface.box<Contact>(contactsBoxName));
+      verify(contactBox.values);
+    });
+
+    test('getCotacts() to fail', () async {
+      /// Arrange
+      const fakeContactBoxName = 'contactsBoxName';
+
+      when(hiveInterface.isBoxOpen(fakeContactBoxName)).thenReturn(false);
+      when(hiveInterface.box<Contact>(fakeContactBoxName))
+          .thenThrow(Exception('This box does not exist'));
+
+      /// Act
+      hiveDb.getContacts(fakeContactBoxName);
+
+      /// Assert
+      verify(hiveInterface.isBoxOpen(fakeContactBoxName)).called(1);
+      verifyNever(hiveInterface.box<Contact>(fakeContactBoxName));
     });
   });
 }

@@ -10,23 +10,15 @@ import 'hive_db_repository.dart';
 import '/models/contact.dart';
 
 class HiveDb implements HiveDbRepository {
-  final HiveInterface hive;
   const HiveDb(this.hive);
 
+  final HiveInterface hive;
+
   @override
-  Future initializeBoxes() async {
+  Future initializeDb() async {
     await hive.initFlutter();
     hive.registerAdapter<Contact>(ContactAdapter());
     hive.registerAdapter<Group>(GroupAdapter());
-  }
-
-  @override
-  bool? getPermission() {
-    if (hive.isBoxOpen(permissionStatusBoxName)) {
-      final permissionBox = hive.box<bool>(permissionStatusBoxName);
-      return permissionBox.get(permissionStatusBoxName);
-    }
-    return null;
   }
 
   @override
@@ -41,6 +33,15 @@ class HiveDb implements HiveDbRepository {
   }
 
   @override
+  bool? getPermission([String? name]) {
+    if (hive.isBoxOpen(name ?? permissionStatusBoxName)) {
+      final permissionBox = hive.box<bool>(name ?? permissionStatusBoxName);
+      return permissionBox.get(name ?? permissionStatusBoxName);
+    }
+    return null;
+  }
+
+  @override
   Future<void> initializeContact(List<Contact> contacts) async {
     try {
       final contactBox = await _openBox<Contact>(contactsBoxName);
@@ -52,9 +53,9 @@ class HiveDb implements HiveDbRepository {
   }
 
   @override
-  List<Contact> getContacts() {
-    if (hive.isBoxOpen(contactsBoxName)) {
-      return hive.box<Contact>(contactsBoxName).values.toList();
+  List<Contact> getContacts([String? name]) {
+    if (hive.isBoxOpen(name ?? contactsBoxName)) {
+      return hive.box<Contact>(name ?? contactsBoxName).values.toList();
     }
     return [];
   }
