@@ -19,38 +19,41 @@ class MyHomeScreen extends StatefulWidget {
 class _MyHomeScreenState extends State<MyHomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(
-          'Contacts',
-          style: Theme.of(context)
-              .textTheme
-              .headlineMedium!
-              .copyWith(color: Theme.of(context).scaffoldBackgroundColor),
-        ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
+    return OrientationBuilder(
+      builder: (context, orientation) => Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: orientation == Orientation.landscape
+              ? null
+              : Text(
+                  'Contacts',
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      color: Theme.of(context).scaffoldBackgroundColor),
+                ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+          bottom: PreferredSize(
+            preferredSize:
+                Size.fromHeight(orientation == Orientation.landscape ? 10 : 70),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SearchTile(contacts: HiveDb(Hive).getContacts()),
+            ),
           ),
         ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(70),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SearchTile(contacts: HiveDb(Hive).getContacts()),
-          ),
+        body: const ContactListWidget(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const AddContact()),
+            );
+          },
+          child: const Icon(Icons.add),
         ),
-      ),
-      body: const ContactListWidget(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const AddContact()),
-          );
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }

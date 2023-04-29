@@ -65,8 +65,10 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
   }
 
   void _changeCurrentIndex(int value) {
-    _currentIndex.value = alphabets.indexWhere(
-        (element) => element == contacts[value].name[0].toUpperCase());
+    _currentIndex.value = contacts[value].name.isEmpty
+        ? 0
+        : alphabets.indexWhere(
+            (element) => element == contacts[value].name[0].toUpperCase());
   }
 
   @override
@@ -74,8 +76,10 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
     initList(widget.contacts);
     _itemPositionsListener.itemPositions.addListener(() {
       _changeCurrentIndex(value());
-      _currentIndex.value = alphabets.indexWhere(
-          (element) => element == contacts[value()].name[0].toUpperCase());
+      _currentIndex.value = contacts[value()].name.isEmpty
+          ? 0
+          : alphabets.indexWhere(
+              (element) => element == contacts[value()].name[0].toUpperCase());
       print('Debug (itemPosition): ${_currentIndex.value}');
       print('Debug (_searchIndex): ${value()}');
       print('Debug (Contact current index): $_currentIndex');
@@ -102,39 +106,42 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
           Container(
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.only(right: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: alphabets.map((alpha) {
-                return InkWell(
-                    onTap: () => _jumpTo(alpha),
-                    child: ValueListenableBuilder(
-                      valueListenable: _currentIndex,
-                      builder: (_, value, __) => Container(
-                        height: 20,
-                        width: 20,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: alphabets[value == -1 ? 0 : value] == alpha
-                              ? Theme.of(context).colorScheme.secondary
-                              : null,
-                        ),
-                        child: Center(
-                          child: Text(
-                            alpha,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(
-                                    color: alphabets[value == -1 ? 0 : value] ==
-                                            alpha
-                                        ? Theme.of(context)
-                                            .scaffoldBackgroundColor
-                                        : null),
+            child: SizedBox(
+              width: 20,
+              child: ListView(
+                children: alphabets.map((alpha) {
+                  return GestureDetector(
+                      onTap: () => _jumpTo(alpha),
+                      child: ValueListenableBuilder(
+                        valueListenable: _currentIndex,
+                        builder: (_, value, __) => Container(
+                          height: 20,
+                          width: 20,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: alphabets[value == -1 ? 0 : value] == alpha
+                                ? Theme.of(context).colorScheme.secondary
+                                : null,
+                          ),
+                          child: Center(
+                            child: Text(
+                              alpha,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(
+                                      color:
+                                          alphabets[value == -1 ? 0 : value] ==
+                                                  alpha
+                                              ? Theme.of(context)
+                                                  .scaffoldBackgroundColor
+                                              : null),
+                            ),
                           ),
                         ),
-                      ),
-                    ));
-              }).toList(),
+                      ));
+                }).toList(),
+              ),
             ),
           )
         ],
@@ -148,9 +155,7 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
         itemScrollController: _itemScrollController,
         itemPositionsListener: _itemPositionsListener,
         reverse: false,
-        scrollDirection: orientation == Orientation.portrait
-            ? Axis.vertical
-            : Axis.horizontal,
+        scrollDirection: Axis.vertical,
       );
 
   Widget _buildListItem(Contact contact) {

@@ -8,7 +8,7 @@ import 'package:hive_test/hive_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'constants.dart';
+import '../constants.dart';
 import 'hive_db_test.mocks.dart';
 
 class MockHiveBox<T> extends Mock implements Box<T> {}
