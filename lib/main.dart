@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 
 import 'data/hive_db.dart';
 import 'permission_checker.dart';
+import 'screens/add_contact_screen.dart';
 import 'screens/my_home_screen.dart';
 import 'utils/app_theme.dart';
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
               : const PermisionChecker(),
       routes: {
         MyHomeScreen.id: (_) => const MyHomeScreen(),
+        AddContact.id: (_) => const AddContact(),
       },
     );
   }

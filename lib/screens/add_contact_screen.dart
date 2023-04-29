@@ -4,6 +4,8 @@ import 'package:contact_app/widgets/text_field.dart';
 import '../models/group.dart';
 
 class AddContact extends StatefulWidget {
+  static const id = '/add-contact';
+  
   const AddContact({super.key});
 
   @override
