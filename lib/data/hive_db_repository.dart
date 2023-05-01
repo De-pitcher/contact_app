@@ -18,4 +18,11 @@ abstract class HiveDbRepository {
     String email,
     Group group,
   );
+
+  Future<int> updateContact(
+    String name,
+    String number,
+    String email,
+    Group group,
+  );
 }

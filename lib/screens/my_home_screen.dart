@@ -26,6 +26,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       builder: (context, orientation) => Scaffold(
         appBar: AppBar(
           elevation: 0,
+          automaticallyImplyLeading: false,
           title: orientation == Orientation.landscape
               ? null
               : Text(

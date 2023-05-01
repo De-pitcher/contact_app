@@ -108,7 +108,7 @@ class _ContactWidgetState extends State<ContactWidget> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 10,
+        elevation: 3,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context)

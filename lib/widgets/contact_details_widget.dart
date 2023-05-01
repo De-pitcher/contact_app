@@ -11,6 +11,14 @@ import 'icon_card.dart';
 enum ContactAction { edit, delete }
 
 class ContactDetailsWidget extends StatelessWidget {
+  final Color color;
+  final String? email;
+  final int index;
+  final String? group;
+  final Uint8List? imageUrl;
+  final String location;
+  final String name;
+  final String number;
   const ContactDetailsWidget({
     super.key,
     required this.name,
@@ -19,16 +27,9 @@ class ContactDetailsWidget extends StatelessWidget {
     required this.location,
     this.email,
     this.group,
-    required this.color,
+    required this.color, required this.index,
   });
 
-  final Color color;
-  final String? email;
-  final String? group;
-  final Uint8List? imageUrl;
-  final String location;
-  final String name;
-  final String number;
 
   @override
   Widget build(BuildContext context) {

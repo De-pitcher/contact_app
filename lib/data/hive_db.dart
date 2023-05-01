@@ -76,6 +76,23 @@ class HiveDb implements HiveDbRepository {
     return contactBox.add(contact);
   }
 
+  @override
+  Future<int> updateContact(
+    String name,
+    String number,
+    String email,
+    Group group,
+  ) {
+    final contactBox = hive.box<Contact>(contactsBoxName);
+    final contact = Contact(
+      name: name,
+      number: number,
+      group: group,
+    );
+    // contactBox.</Contact>
+    return contactBox.add(contact);
+  }
+
   Future<Box<E>> _openBox<E>(String name) async {
     try {
       final box = await hive.openBox<E>(name);

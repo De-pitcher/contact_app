@@ -157,14 +157,14 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
 
   Widget _list(Orientation orientation) => ScrollablePositionedList.builder(
         itemCount: widget.contacts.length,
-        itemBuilder: (_, index) => _buildListItem(widget.contacts[index]),
+        itemBuilder: (_, index) => _buildListItem(widget.contacts[index],index),
         itemScrollController: _itemScrollController,
         itemPositionsListener: _itemPositionsListener,
         reverse: false,
         scrollDirection: Axis.vertical,
       );
 
-  Widget _buildListItem(Contact contact) {
+  Widget _buildListItem(Contact contact, int index) {
     final offstage = !contact.isShowSuspension;
     return Column(
       children: [
@@ -177,6 +177,7 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
           number: contact.number,
           group: contact.group,
           tag: contact.getSuspensionTag(),
+          index: index,
         ),
       ],
     );
