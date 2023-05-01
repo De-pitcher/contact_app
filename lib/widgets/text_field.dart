@@ -27,11 +27,10 @@ class Textfield extends StatelessWidget {
     return Row(
       children: [
         Icon(icon),
-        SizedBox(
-          width: icon != null ? 16 : 0,
-        ),
+        const SizedBox(width: 16),
         Expanded(
           child: TextFormField(
+            controller: controller,
             keyboardType: keyboardType,
             onChanged: onChanged,
             validator: validator,
