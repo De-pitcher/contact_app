@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../widgets/contact_widget.dart';
 
-
 class AddContact extends StatefulWidget {
   static const id = '/add-contact';
 
@@ -16,6 +15,6 @@ class AddContact extends StatefulWidget {
 class _AddContactState extends State<AddContact> {
   @override
   Widget build(BuildContext context) {
-    return const ContactWidget(group: Group.non);
+    return const ContactWidget(title: 'Create new contact', group: Group.non);
   }
 }

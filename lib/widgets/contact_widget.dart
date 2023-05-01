@@ -8,6 +8,7 @@ import '../models/group.dart';
 import '../utils/app_color.dart';
 
 class ContactWidget extends StatefulWidget {
+  final String title;
   final String name;
   final String number;
   final String email;
@@ -18,7 +19,7 @@ class ContactWidget extends StatefulWidget {
     this.name = '',
     this.number = '',
     this.email = '',
-    required this.group,
+    required this.group, required this.title,
   });
 
   @override
@@ -110,7 +111,7 @@ class _ContactWidgetState extends State<ContactWidget> {
             Navigator.pop(context);
           },
         ),
-        title: const Text('Create new contact'),
+        title: Text(widget.title),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
