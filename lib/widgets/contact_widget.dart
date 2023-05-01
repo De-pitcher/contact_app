@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 
 import '../data/hive_db.dart';
 import '../models/group.dart';
+import '../screens/my_home_screen.dart';
 import '../utils/app_color.dart';
 
 class ContactWidget extends StatefulWidget {
@@ -19,7 +20,8 @@ class ContactWidget extends StatefulWidget {
     this.name = '',
     this.number = '',
     this.email = '',
-    required this.group, required this.title,
+    required this.group,
+    required this.title,
   });
 
   @override
@@ -39,8 +41,10 @@ class _ContactWidgetState extends State<ContactWidget> {
   void initState() {
     _firstNameController =
         TextEditingController(text: widget.name.split(' ').first);
-    _lastNameController =
-        TextEditingController(text: widget.name.split(' ').last);
+    _lastNameController = TextEditingController(
+        text: widget.name.split(' ').first == widget.name.split(' ').last
+            ? ''
+            : widget.name.split(' ').last);
     _numberNameController = TextEditingController(text: widget.number);
     _emailNameController = TextEditingController(text: widget.email);
     _dropdownValue = widget.group;
@@ -107,9 +111,9 @@ class _ContactWidgetState extends State<ContactWidget> {
         elevation: 10,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.of(context)
+        .pushReplacementNamed(MyHomeScreen.id)
+        .then((value) => true),
         ),
         title: Text(widget.title),
         actions: [
