@@ -48,6 +48,8 @@ dependencies:
   scrollable_positioned_list: ^0.2.3
   hive_test: ^1.0.1
   mockito: ^5.4.0
+  riverpod: ^2.3.6
+  flutter_riverpod: ^2.3.6
 
 dev_dependencies:
   flutter_test:

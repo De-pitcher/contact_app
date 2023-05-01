@@ -1,6 +1,5 @@
 import 'package:contact_app/widgets/alphabetic_scroll_page.dart';
 import 'package:contact_app/widgets/contact_details_widget.dart';
-import 'package:contact_app/widgets/contact_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';

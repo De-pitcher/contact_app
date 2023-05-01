@@ -39,7 +39,7 @@ class AlphabeticScrollPage extends StatefulWidget {
 }
 
 class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
-  List<Contact> contacts = [];
+  // List<Contact> contacts = [];
   List<String> alphabets = [
     '#',
     ...List.generate(26, (index) => String.fromCharCode(index + 65))
@@ -58,17 +58,17 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
 
   void _jumpTo(String searchLetter) {
     setState(() {
-      final index = contacts
+      final index = widget.contacts
           .indexWhere((element) => element.getSuspensionTag() == searchLetter);
       if (index >= 0) _itemScrollController.jumpTo(index: index);
     });
   }
 
   void _changeCurrentIndex(int value) {
-    _currentIndex.value = contacts[value].name.isEmpty
+    _currentIndex.value = widget.contacts[value].name.isEmpty
         ? 0
-        : alphabets.indexWhere(
-            (element) => element == contacts[value].name[0].toUpperCase());
+        : alphabets.indexWhere((element) =>
+            element == widget.contacts[value].name[0].toUpperCase());
   }
 
   @override
@@ -76,10 +76,10 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
     initList(widget.contacts);
     _itemPositionsListener.itemPositions.addListener(() {
       _changeCurrentIndex(value());
-      _currentIndex.value = contacts[value()].name.isEmpty
+      _currentIndex.value = widget.contacts[value()].name.isEmpty
           ? 0
-          : alphabets.indexWhere(
-              (element) => element == contacts[value()].name[0].toUpperCase());
+          : alphabets.indexWhere((element) =>
+              element == widget.contacts[value()].name[0].toUpperCase());
       print('Debug (itemPosition): ${_currentIndex.value}');
       print('Debug (_searchIndex): ${value()}');
       print('Debug (Contact current index): $_currentIndex');
@@ -89,9 +89,15 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
   }
 
   void initList(List<Contact> contacts) {
-    this.contacts = contacts;
-    CustomSuspensionUtil.sortListBySuspensionTag(this.contacts);
-    CustomSuspensionUtil.setShowSuspensionStatus(this.contacts);
+    print('>----------- Initialize the list -------------<');
+    CustomSuspensionUtil.sortListBySuspensionTag(widget.contacts);
+    CustomSuspensionUtil.setShowSuspensionStatus(widget.contacts);
+  }
+
+  @override
+  void didUpdateWidget(covariant AlphabeticScrollPage oldWidget) {
+    initList(widget.contacts);
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -111,35 +117,35 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
               child: ListView(
                 children: alphabets.map((alpha) {
                   return GestureDetector(
-                      onTap: () => _jumpTo(alpha),
-                      child: ValueListenableBuilder(
-                        valueListenable: _currentIndex,
-                        builder: (_, value, __) => Container(
-                          height: 20,
-                          width: 20,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: alphabets[value == -1 ? 0 : value] == alpha
-                                ? Theme.of(context).colorScheme.secondary
-                                : null,
-                          ),
-                          child: Center(
-                            child: Text(
-                              alpha,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                      color:
-                                          alphabets[value == -1 ? 0 : value] ==
-                                                  alpha
-                                              ? Theme.of(context)
-                                                  .scaffoldBackgroundColor
-                                              : null),
-                            ),
+                    onTap: () => _jumpTo(alpha),
+                    child: ValueListenableBuilder(
+                      valueListenable: _currentIndex,
+                      builder: (_, value, __) => Container(
+                        height: 20,
+                        width: 20,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: alphabets[value == -1 ? 0 : value] == alpha
+                              ? Theme.of(context).colorScheme.secondary
+                              : null,
+                        ),
+                        child: Center(
+                          child: Text(
+                            alpha,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    color: alphabets[value == -1 ? 0 : value] ==
+                                            alpha
+                                        ? Theme.of(context)
+                                            .scaffoldBackgroundColor
+                                        : null),
                           ),
                         ),
-                      ));
+                      ),
+                    ),
+                  );
                 }).toList(),
               ),
             ),
@@ -150,8 +156,8 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
   }
 
   Widget _list(Orientation orientation) => ScrollablePositionedList.builder(
-        itemCount: contacts.length,
-        itemBuilder: (_, index) => _buildListItem(contacts[index]),
+        itemCount: widget.contacts.length,
+        itemBuilder: (_, index) => _buildListItem(widget.contacts[index]),
         itemScrollController: _itemScrollController,
         itemPositionsListener: _itemPositionsListener,
         reverse: false,

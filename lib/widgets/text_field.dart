@@ -1,46 +1,54 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Textfield extends StatelessWidget {
-  final TextEditingController controller;
   final String hint;
+  final String? errorText;
+  final IconData? icon;
+  final Function(String)? onChanged;
+  final TextInputType? keyboardType;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
   const Textfield({
     Key? key,
-    required this.controller,
     required this.hint,
+    this.controller,
+    this.onChanged,
+    this.inputFormatters,
+    this.icon,
+    this.errorText,
+    this.validator,
+    this.keyboardType,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      decoration: InputDecoration(hintText: hint),
-      controller: controller,
-    );
-  }
-}
-
-// ignore: camel_case_types
-class phoneTextField extends StatelessWidget {
-  final String hint;
-  const phoneTextField({
-    Key? key,
-    required this.hint,
-    required TextEditingController controller,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      keyboardType: TextInputType.number,
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly
+    return Row(
+      children: [
+        Icon(icon),
+        SizedBox(
+          width: icon != null ? 16 : 0,
+        ),
+        Expanded(
+          child: TextFormField(
+            keyboardType: keyboardType,
+            onChanged: onChanged,
+            validator: validator,
+            inputFormatters: inputFormatters,
+            maxLength: 11,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: Theme.of(context).appBarTheme.foregroundColor),
+            decoration: InputDecoration(
+              hintText: hint,
+              counterText: '',
+              errorText: errorText,
+            ),
+          ),
+        ),
       ],
-      maxLength: 11,
-      decoration: InputDecoration(
-        hintText: hint,
-        counterText: '',
-      ),
     );
   }
 }

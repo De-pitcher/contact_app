@@ -22,19 +22,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final permissionStatus = HiveDb(Hive).getPermission();
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark(context),
-      home: permissionStatus == null
-          ? const PermisionChecker()
-          : permissionStatus
-              ? const MyHomeScreen()
-              : const PermisionChecker(),
-      routes: {
-        MyHomeScreen.id: (_) => const MyHomeScreen(),
-        AddContact.id: (_) => const AddContact(),
-      },
-    );
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.dark(context),
+        // home: const AddContact()
+        home: permissionStatus == null
+            ? const PermisionChecker()
+            : permissionStatus
+                ? const MyHomeScreen()
+                : const PermisionChecker(),
+        routes: {
+          MyHomeScreen.id: (_) => const MyHomeScreen(),
+          AddContact.id: (_) => const AddContact(),
+        },
+        );
   }
 }
-
