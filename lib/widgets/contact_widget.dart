@@ -110,143 +110,148 @@ class _ContactWidgetState extends State<ContactWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 3,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () =>
-              Navigator.of(context).pushReplacementNamed(MyHomeScreen.id),
+    return WillPopScope(
+      onWillPop: () => Navigator.of(context)
+          .pushReplacementNamed(MyHomeScreen.id)
+          .then((value) => true),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 3,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () =>
+                Navigator.of(context).pushReplacementNamed(MyHomeScreen.id),
+          ),
+          title: Text(widget.title),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: TextButton(
+                onPressed: _onCreate,
+                style: TextButton.styleFrom(foregroundColor: AppColor.primary),
+                child: _isLoading
+                    ? CircularProgressIndicator(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      )
+                    : const Text('Save'),
+              ),
+            )
+          ],
         ),
-        title: Text(widget.title),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: TextButton(
-              onPressed: _onCreate,
-              style: TextButton.styleFrom(foregroundColor: AppColor.primary),
-              child: _isLoading
-                  ? CircularProgressIndicator(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                    )
-                  : const Text('Save'),
-            ),
-          )
-        ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const SizedBox(height: 50),
-              Textfield(
-                key: const Key('FirstName'),
-                controller: _firstNameController,
-                hint: 'FirstName',
-                icon: Icons.person,
-                keyboardType: TextInputType.name,
-                validator: (val) => _errorText(val!),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Textfield(
-                key: const Key('LastName'),
-                controller: _lastNameController,
-                hint: 'LastName',
-                validator: (val) => _errorText(val!),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Textfield(
-                key: const Key('Phone'),
-                controller: _numberNameController,
-                hint: 'Phone',
-                icon: Icons.phone,
-                keyboardType: TextInputType.phone,
-                validator: (val) => _errorText(val!),
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Textfield(
-                key: const Key('Email'),
-                controller: _emailNameController,
-                hint: 'Email',
-                icon: Icons.email,
-                keyboardType: TextInputType.emailAddress,
-                validator: (val) => _errorText(val!),
-              ),
-              const SizedBox(
-                height: 48,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Select group'),
-                  const SizedBox(width: 18),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25),
-                    child: PopupMenuButton<Group>(
-                      initialValue: _dropdownValue,
-                      itemBuilder: (_) => [
-                        PopupMenuItem(
-                          value: Group.family,
-                          child: Text('Family',
-                              style: Theme.of(context).textTheme.bodyLarge),
-                        ),
-                        PopupMenuItem(
-                          value: Group.favorite,
-                          child: Text('Favorite',
-                              style: Theme.of(context).textTheme.bodyLarge),
-                        ),
-                        PopupMenuItem(
-                          value: Group.custom,
-                          child: Text('Custom',
-                              style: Theme.of(context).textTheme.bodyLarge),
-                        ),
-                        PopupMenuItem(
-                          key: const Key('NON'),
-                          value: Group.non,
-                          child: Text('Non',
-                              style: Theme.of(context).textTheme.bodyLarge),
-                        ),
-                      ],
-                      onSelected: (value) {
-                        setState(() {
-                          _dropdownValue = value;
-                        });
-                      },
-                      child: Row(
-                        children: [
-                          Text(
-                            _dropdownValue!.name.toUpperCase(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(color: AppColor.primary),
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                const SizedBox(height: 50),
+                Textfield(
+                  key: const Key('FirstName'),
+                  controller: _firstNameController,
+                  hint: 'FirstName',
+                  icon: Icons.person,
+                  keyboardType: TextInputType.name,
+                  validator: (val) => _errorText(val!),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Textfield(
+                  key: const Key('LastName'),
+                  controller: _lastNameController,
+                  hint: 'LastName',
+                  validator: (val) => _errorText(val!),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Textfield(
+                  key: const Key('Phone'),
+                  controller: _numberNameController,
+                  hint: 'Phone',
+                  icon: Icons.phone,
+                  keyboardType: TextInputType.phone,
+                  validator: (val) => _errorText(val!),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Textfield(
+                  key: const Key('Email'),
+                  controller: _emailNameController,
+                  hint: 'Email',
+                  icon: Icons.email,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (val) => _errorText(val!),
+                ),
+                const SizedBox(
+                  height: 48,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Select group'),
+                    const SizedBox(width: 18),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25),
+                      child: PopupMenuButton<Group>(
+                        initialValue: _dropdownValue,
+                        itemBuilder: (_) => [
+                          PopupMenuItem(
+                            value: Group.family,
+                            child: Text('Family',
+                                style: Theme.of(context).textTheme.bodyLarge),
                           ),
-                          const SizedBox(width: 8),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color:
-                                Theme.of(context).appBarTheme.backgroundColor,
-                            size: 30,
+                          PopupMenuItem(
+                            value: Group.favorite,
+                            child: Text('Favorite',
+                                style: Theme.of(context).textTheme.bodyLarge),
+                          ),
+                          PopupMenuItem(
+                            value: Group.custom,
+                            child: Text('Custom',
+                                style: Theme.of(context).textTheme.bodyLarge),
+                          ),
+                          PopupMenuItem(
+                            key: const Key('NON'),
+                            value: Group.non,
+                            child: Text('Non',
+                                style: Theme.of(context).textTheme.bodyLarge),
                           ),
                         ],
+                        onSelected: (value) {
+                          setState(() {
+                            _dropdownValue = value;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              _dropdownValue!.name.toUpperCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(color: AppColor.primary),
+                            ),
+                            const SizedBox(width: 8),
+                            Icon(
+                              Icons.arrow_drop_down,
+                              color:
+                                  Theme.of(context).appBarTheme.backgroundColor,
+                              size: 30,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
