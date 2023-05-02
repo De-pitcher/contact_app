@@ -20,7 +20,8 @@ class ContactTile extends StatelessWidget {
     required this.number,
     this.imageUrl,
     this.group,
-    required this.tag, required this.id,
+    required this.tag,
+    required this.id,
   });
 
   void _launchDialer(String number) async {
@@ -66,7 +67,10 @@ class ContactTile extends StatelessWidget {
             : CircleAvatar(
                 backgroundColor: bgColor,
                 child: imageUrl == null || imageUrl!.isEmpty
-                    ? Text(tag)
+                    ? Text(
+                        tag,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )
                     : Image.memory(imageUrl!),
               ),
         title: Text(
