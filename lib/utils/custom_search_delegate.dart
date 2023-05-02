@@ -54,6 +54,7 @@ class CustomSearchDelegate extends SearchDelegate {
           id: contact.id,
           name: contact.name,
           number: contact.number,
+          email: contact.email,
           group: contact.group,
           tag: contact.getSuspensionTag(),
         );
@@ -79,6 +80,7 @@ class CustomSearchDelegate extends SearchDelegate {
           id: contact.id,
           name: contact.name,
           number: contact.number,
+          email: contact.email,
           group: contact.group,
           tag: contact.getSuspensionTag(),
         );

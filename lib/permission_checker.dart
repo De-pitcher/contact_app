@@ -4,9 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart' as local;
 
-import 'constants/constants.dart';
 import 'data/hive_db.dart';
-import 'models/contact_list.dart';
 import 'screens/my_home_screen.dart';
 import 'utils/app_color.dart';
 import 'widgets/empty_widget.dart';
@@ -111,9 +109,9 @@ class _PermisionCheckerState extends State<PermisionChecker> {
                   return const MyHomeScreen();
                 }
                 if(snapshot.hasError) {
-                  return const Scaffold(
+                  return  Scaffold(
                   body: Center(
-                    child: Text('Could\'nt load contacts'),
+                    child: Text('An error occurred: ${snapshot.error.toString()}'),
                   ),
                 );
                 }

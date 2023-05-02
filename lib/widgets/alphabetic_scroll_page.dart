@@ -173,10 +173,11 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
           child: buildHeader(contact.getSuspensionTag()),
         ),
         ContactTile(
+          id: contact.id,
           name: contact.name,
           number: contact.number,
+          email: contact.email,
           group: contact.group,
-          id: contact.id,
           tag: contact.getSuspensionTag(),
         ),
       ],

@@ -15,7 +15,7 @@ enum ContactAction { edit, delete }
 class ContactDetailsWidget extends StatelessWidget {
   final Color color;
   final String? email;
-  final String? group;
+  final Group group;
   final Uint8List? imageUrl;
   final String location;
   final String name;
@@ -28,7 +28,7 @@ class ContactDetailsWidget extends StatelessWidget {
     required this.number,
     required this.location,
     this.email,
-    this.group,
+    this.group = Group.non,
     required this.color,
     required this.id,
   });
@@ -48,9 +48,13 @@ class ContactDetailsWidget extends StatelessWidget {
               title: Text(
                 name,
                 textScaleFactor: 1,
-                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      color: Theme.of(context).appBarTheme.backgroundColor,
-                    ),
+                style: name.length < 10
+                    ? Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          color: Theme.of(context).appBarTheme.backgroundColor,
+                        )
+                    : Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Theme.of(context).appBarTheme.backgroundColor,
+                        ),
               ),
               background: Hero(
                 tag: const Key('UserImage'),
@@ -98,7 +102,8 @@ class ContactDetailsWidget extends StatelessWidget {
                         builder: (_) => ContactWidget(
                           name: name,
                           number: number,
-                          group: Group.non,
+                          email: email!,
+                          group: group,
                           id: id,
                           title: 'Edit Contact',
                         ),
@@ -155,7 +160,7 @@ class ContactDetailsWidget extends StatelessWidget {
                     ),
                     ContactDetailTile(
                       title: 'Group',
-                      subtitle: group ?? 'nil',
+                      subtitle: group.name,
                       trailing: const IconCard(icon: Icons.group),
                     ),
                   ],

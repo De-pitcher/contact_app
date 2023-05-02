@@ -141,6 +141,7 @@ void main() {
         id: const Uuid().v1(),
         name: 'name',
         number: 'number',
+        email: 'email@gmail.com',
       );
       when(hiveInterface.box<Contact>(contactsBoxName))
           .thenAnswer((_) => contactBox);

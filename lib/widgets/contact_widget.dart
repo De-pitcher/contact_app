@@ -1,3 +1,4 @@
+import 'package:contact_app/utils/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:contact_app/widgets/text_field.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +16,6 @@ class ContactWidget extends StatefulWidget {
   final String name;
   final String number;
   final String email;
-  // final bool edit;
   final Group group;
   const ContactWidget({
     super.key,
@@ -38,7 +38,7 @@ class _ContactWidgetState extends State<ContactWidget> {
   late final TextEditingController _numberNameController;
   late final TextEditingController _emailNameController;
   var _isLoading = false;
-  late Group? _dropdownValue;
+  late Group _dropdownValue;
 
   @override
   void initState() {
@@ -74,9 +74,10 @@ class _ContactWidgetState extends State<ContactWidget> {
         name:
             '${_firstNameController.value.text} ${_lastNameController.value.text}',
         number: _numberNameController.value.text,
-        group: _dropdownValue!,
+        email: _emailNameController.value.text,
+        group: _dropdownValue,
       );
-      if (widget.id != '') {
+      if (widget.id == '') {
         await HiveDb(Hive).updateContact(contact).then((value) =>
             Navigator.of(context).pushReplacementNamed(MyHomeScreen.id));
       } else {
@@ -161,7 +162,6 @@ class _ContactWidgetState extends State<ContactWidget> {
                   key: const Key('LastName'),
                   controller: _lastNameController,
                   hint: 'LastName',
-                  validator: (val) => _errorText(val!),
                 ),
                 const SizedBox(
                   height: 24,
@@ -171,6 +171,7 @@ class _ContactWidgetState extends State<ContactWidget> {
                   controller: _numberNameController,
                   hint: 'Phone',
                   icon: Icons.phone,
+                  maxLength: 11,
                   keyboardType: TextInputType.phone,
                   validator: (val) => _errorText(val!),
                   inputFormatters: <TextInputFormatter>[
@@ -186,7 +187,8 @@ class _ContactWidgetState extends State<ContactWidget> {
                   hint: 'Email',
                   icon: Icons.email,
                   keyboardType: TextInputType.emailAddress,
-                  validator: (val) => _errorText(val!),
+                  validator: (val) =>
+                      val!.isValidEmail() ? null : 'Invalid email',
                 ),
                 const SizedBox(
                   height: 48,
@@ -231,7 +233,7 @@ class _ContactWidgetState extends State<ContactWidget> {
                         child: Row(
                           children: [
                             Text(
-                              _dropdownValue!.name.toUpperCase(),
+                              _dropdownValue.name.toUpperCase(),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!

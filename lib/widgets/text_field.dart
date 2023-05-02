@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 class Textfield extends StatelessWidget {
   final String hint;
+  final int? maxLength;
   final String? errorText;
   final IconData? icon;
   final Function(String)? onChanged;
@@ -20,6 +21,7 @@ class Textfield extends StatelessWidget {
     this.errorText,
     this.validator,
     this.keyboardType,
+    this.maxLength,
   }) : super(key: key);
 
   @override
@@ -35,7 +37,7 @@ class Textfield extends StatelessWidget {
             onChanged: onChanged,
             validator: validator,
             inputFormatters: inputFormatters,
-            maxLength: 11,
+            maxLength: maxLength,
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge!

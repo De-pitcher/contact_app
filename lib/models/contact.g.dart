@@ -20,14 +20,15 @@ class ContactAdapter extends TypeAdapter<Contact> {
       id: fields[0] as String,
       name: fields[1] as String,
       number: fields[2] as String,
-      group: fields[3] == null ? Group.non : fields[3] as Group,
+      email: fields[3] as String,
+      group: fields[4] == null ? Group.non : fields[4] as Group,
     );
   }
 
   @override
   void write(BinaryWriter writer, Contact obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,6 +36,8 @@ class ContactAdapter extends TypeAdapter<Contact> {
       ..writeByte(2)
       ..write(obj.number)
       ..writeByte(3)
+      ..write(obj.email)
+      ..writeByte(4)
       ..write(obj.group);
   }
 
