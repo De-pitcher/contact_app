@@ -18,6 +18,7 @@ class HiveDb implements HiveDbRepository {
   @override
   Future initializeDb() async {
     await hive.initFlutter();
+    await _openBox<bool>(darkModeBoxName);
     hive.registerAdapter<Contact>(ContactAdapter());
     hive.registerAdapter<Group>(GroupAdapter());
   }
@@ -101,7 +102,9 @@ class HiveDb implements HiveDbRepository {
       final number = value.phones == null || value.phones!.isEmpty
           ? ''
           : value.phones!.first.value ?? '';
-      final email = value.emails == null || value.emails!.isEmpty ? '' : value.emails!.first.value ?? '';
+      final email = value.emails == null || value.emails!.isEmpty
+          ? ''
+          : value.emails!.first.value ?? '';
       // Checks if the contact already exist and returns it
       // and if it does not creates a new one.
       contact = getContacts().firstWhere(
