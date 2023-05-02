@@ -85,17 +85,24 @@ class HiveDb implements HiveDbRepository {
   }
 
   List<Contact> convertToContact(List<local.Contact> contacts) {
+    Contact contact;
     return contacts.map((value) {
       final name = value.givenName ?? value.displayName ?? 'Unknown';
       final number = value.phones == null || value.phones!.isEmpty
           ? ''
           : value.phones!.first.value ?? '';
-      return Contact(
-        id: const Uuid().v1(),
-        name: name,
-        number: number.startsWith(name.characters.first) ? '' : number,
-        group: Group.non,
+      // Checks if the contact already exist and returns it
+      // and if it does not creates a new one.
+      contact = getContacts().firstWhere(
+        (element) => element.name == name || element.number == number,
+        orElse: () => Contact(
+          id: const Uuid().v1(),
+          name: name,
+          number: number.startsWith(name.characters.first) ? '' : number,
+          group: Group.non,
+        ),
       );
+      return contact;
     }).toList();
   }
 }
