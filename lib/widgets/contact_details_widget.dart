@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:contact_app/widgets/contact_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../data/hive_db.dart';
 import '../models/group.dart';
@@ -32,6 +35,25 @@ class ContactDetailsWidget extends StatelessWidget {
     required this.color,
     required this.id,
   });
+
+  void _launchUrl(String scheme, [String? path]) async {
+    final url = Uri(scheme: scheme, path: path);
+    if (!await launchUrl(url)) {
+      throw 'Application unable to open dialer.';
+    }
+  }
+
+  void _launchWhatsapp(String number) async {
+    String url;
+    if (Platform.isAndroid) {
+      url = 'whatsapp://send?phone=$number';
+    } else {
+      url = 'whatsapp://wa.me/$number';
+    }
+    if (!await launchUrlString(url)) {
+      throw 'Application unable to open dialer.';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,15 +162,21 @@ class ContactDetailsWidget extends StatelessWidget {
                   children: [
                     ContactDetailTile(
                       title: 'Number',
-                      subtitle: number,
+                      subtitle: number == '' ? 'nil' : number,
                       trailing: SizedBox(
                         width: 120,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            IconCard(icon: Icons.message),
-                            SizedBox(width: 10),
-                            IconCard(icon: Icons.phone),
+                          children: [
+                            IconCard(
+                              icon: Icons.message,
+                              onPressed: () => _launchUrl('sms'),
+                            ),
+                            const SizedBox(width: 10),
+                            IconCard(
+                              icon: Icons.phone,
+                              onPressed: () => _launchUrl('tel', number),
+                            ),
                           ],
                         ),
                       ),
@@ -156,7 +184,10 @@ class ContactDetailsWidget extends StatelessWidget {
                     ContactDetailTile(
                       title: 'Email',
                       subtitle: email ?? 'nil',
-                      trailing: const IconCard(icon: Icons.email),
+                      trailing: IconCard(
+                        icon: Icons.email,
+                        onPressed: () => _launchUrl('mailto', email),
+                      ),
                     ),
                     ContactDetailTile(
                       title: 'Group',
@@ -176,8 +207,11 @@ class ContactDetailsWidget extends StatelessWidget {
                         width: 120,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            IconCard(icon: Icons.telegram),
+                          children: [
+                            IconCard(
+                              icon: Icons.telegram,
+                              onPressed: () => _launchUrl('tg', name),
+                            ),
                           ],
                         ),
                       ),
@@ -185,7 +219,10 @@ class ContactDetailsWidget extends StatelessWidget {
                     ContactDetailTile(
                       title: 'WhatsApp',
                       subtitle: number,
-                      trailing: const IconCard(icon: Icons.wechat),
+                      trailing: IconCard(
+                        icon: Icons.wechat,
+                        onPressed: () => _launchWhatsapp(number),
+                      ),
                     ),
                   ],
                 ),

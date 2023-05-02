@@ -2,7 +2,6 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../models/group.dart';
 import 'contact_details_widget.dart';
@@ -26,14 +25,6 @@ class ContactTile extends StatelessWidget {
     required this.email,
   });
 
-  void _launchDialer(String number) async {
-    print('Debug (check number): $number');
-
-    final url = Uri(scheme: 'tel', path: number);
-    if (!await launchUrl(url)) {
-      throw 'Application unable to open dialer.';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
