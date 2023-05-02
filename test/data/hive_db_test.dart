@@ -7,6 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_test/hive_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:uuid/uuid.dart';
 
 import '../constants.dart';
 import 'hive_db_test.mocks.dart';
@@ -134,5 +135,33 @@ void main() {
         verifyNever(hiveInterface.box<Contact>(fakeContactBoxName));
       });
     });
+ test('Test createContact()', () async {
+        final contactBox = MockMockHiveBox<Contact>();
+        final contact = Contact(
+          id: const Uuid().v1(),
+          name: 'name',
+          number: 'number',
+        );
+        when(hiveInterface.box<Contact>(contactsBoxName))
+            .thenAnswer((_) => contactBox);
+
+        hiveDb.createContact(contact);
+
+        verify(hiveInterface.box<Contact>(contactsBoxName));
+      });
+
+       test('Test updateContact()', () async {
+        final contactBox = MockMockHiveBox<Contact>();
+        final contact = contacts[1]..name = 'name';
+        when(hiveInterface.box<Contact>(contactsBoxName))
+            .thenAnswer((_) => contactBox);
+        when(hiveInterface.isBoxOpen(contactsBoxName)).thenReturn(true);
+        when(contactBox.values).thenAnswer((_) => contacts);
+
+
+        hiveDb.updateContact(contact);
+
+        verify(hiveInterface.box<Contact>(contactsBoxName));
+      });
   });
 }

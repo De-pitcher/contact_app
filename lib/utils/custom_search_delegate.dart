@@ -51,10 +51,10 @@ class CustomSearchDelegate extends SearchDelegate {
       itemBuilder: (context, index) {
         var contact = matchQuery[index];
         return ContactTile(
+          id: contact.id,
           name: contact.name,
           number: contact.number,
           group: contact.group,
-          index: index,
           tag: contact.getSuspensionTag(),
         );
       },
@@ -76,10 +76,10 @@ class CustomSearchDelegate extends SearchDelegate {
       itemBuilder: (context, index) {
         var contact = matchQuery[index];
         return ContactTile(
+          id: contact.id,
           name: contact.name,
           number: contact.number,
           group: contact.group,
-          index: index,
           tag: contact.getSuspensionTag(),
         );
       },

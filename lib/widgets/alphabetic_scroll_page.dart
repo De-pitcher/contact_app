@@ -176,8 +176,8 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
           name: contact.name,
           number: contact.number,
           group: contact.group,
+          id: contact.id,
           tag: contact.getSuspensionTag(),
-          index: index,
         ),
       ],
     );

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:contacts_service/contacts_service.dart' as local;
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 import '../constants/constants.dart';
 import '../models/group.dart';
@@ -61,36 +62,16 @@ class HiveDb implements HiveDbRepository {
   }
 
   @override
-  Future<int> createContact(
-    String name,
-    String number,
-    String email,
-    Group group,
-  ) {
+  Future<void> createContact(Contact contact) {
     final contactBox = hive.box<Contact>(contactsBoxName);
-    final contact = Contact(
-      name: name,
-      number: number,
-      group: group,
-    );
-    return contactBox.add(contact);
+    return contactBox.put(contact.id, contact);
   }
 
   @override
-  Future<int> updateContact(
-    String name,
-    String number,
-    String email,
-    Group group,
-  ) {
+  Future<void> updateContact(Contact contact) {
     final contactBox = hive.box<Contact>(contactsBoxName);
-    final contact = Contact(
-      name: name,
-      number: number,
-      group: group,
-    );
-    // contactBox.</Contact>
-    return contactBox.add(contact);
+    final index = getContacts().indexWhere((e) => e.id == contact.id);
+    return contactBox.putAt(index, contact);
   }
 
   Future<Box<E>> _openBox<E>(String name) async {
@@ -110,6 +91,7 @@ class HiveDb implements HiveDbRepository {
           ? ''
           : value.phones!.first.value ?? '';
       return Contact(
+        id: const Uuid().v1(),
         name: name,
         number: number.startsWith(name.characters.first) ? '' : number,
         group: Group.non,

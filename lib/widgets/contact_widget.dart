@@ -4,17 +4,19 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 
 import '../data/hive_db.dart';
+import '../models/contact.dart';
 import '../models/group.dart';
 import '../screens/my_home_screen.dart';
 import '../utils/app_color.dart';
 
 class ContactWidget extends StatefulWidget {
   final String title;
+  final String id;
   final String name;
   final String number;
   final String email;
+  // final bool edit;
   final Group group;
-
   const ContactWidget({
     super.key,
     this.name = '',
@@ -22,6 +24,7 @@ class ContactWidget extends StatefulWidget {
     this.email = '',
     required this.group,
     required this.title,
+    this.id = '',
   });
 
   @override
@@ -60,25 +63,27 @@ class _ContactWidgetState extends State<ContactWidget> {
     super.dispose();
   }
 
-  void _setDropdownValue(Group value) {
-    setState(() {
-      _dropdownValue = value;
-    });
-  }
-
   void _onCreate() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
-      await HiveDb(Hive)
-          .createContact(
+
+      final contact = Contact(
+        id: widget.id,
+        name:
             '${_firstNameController.value.text} ${_lastNameController.value.text}',
-            _numberNameController.value.text,
-            _emailNameController.value.text,
-            _dropdownValue!,
-          )
-          .then((value) => Navigator.of(context).pop());
+        number: _numberNameController.value.text,
+        group: _dropdownValue!,
+      );
+      if (widget.id != '') {
+        await HiveDb(Hive).updateContact(contact).then((value) =>
+            Navigator.of(context).pushReplacementNamed(MyHomeScreen.id));
+      } else {
+        await HiveDb(Hive)
+            .createContact(contact)
+            .then((value) => Navigator.of(context).pop());
+      }
       setState(() {
         _isLoading = false;
       });
@@ -111,9 +116,8 @@ class _ContactWidgetState extends State<ContactWidget> {
         elevation: 3,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context)
-        .pushReplacementNamed(MyHomeScreen.id)
-        .then((value) => true),
+          onPressed: () =>
+              Navigator.of(context).pushReplacementNamed(MyHomeScreen.id),
         ),
         title: Text(widget.title),
         actions: [
@@ -188,25 +192,33 @@ class _ContactWidgetState extends State<ContactWidget> {
                     padding: const EdgeInsets.only(left: 25),
                     child: PopupMenuButton<Group>(
                       initialValue: _dropdownValue,
-                      itemBuilder: (_) => const [
+                      itemBuilder: (_) => [
                         PopupMenuItem(
                           value: Group.family,
-                          child: Text('Family'),
+                          child: Text('Family',
+                              style: Theme.of(context).textTheme.bodyLarge),
                         ),
                         PopupMenuItem(
                           value: Group.favorite,
-                          child: Text('Favorite'),
+                          child: Text('Favorite',
+                              style: Theme.of(context).textTheme.bodyLarge),
                         ),
                         PopupMenuItem(
                           value: Group.custom,
-                          child: Text('Custom'),
+                          child: Text('Custom',
+                              style: Theme.of(context).textTheme.bodyLarge),
                         ),
                         PopupMenuItem(
                           value: Group.non,
-                          child: Text('Non'),
+                          child: Text('Non',
+                              style: Theme.of(context).textTheme.bodyLarge),
                         ),
                       ],
-                      onSelected: _setDropdownValue,
+                      onSelected: (value) {
+                        setState(() {
+                          _dropdownValue = value;
+                        });
+                      },
                       child: Row(
                         children: [
                           Text(

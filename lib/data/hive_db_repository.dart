@@ -1,5 +1,4 @@
 import '../models/contact.dart';
-import '../models/group.dart';
 
 abstract class HiveDbRepository {
   Future initializeDb();
@@ -12,17 +11,7 @@ abstract class HiveDbRepository {
 
   List<Contact> getContacts([String? name]);
 
-  Future<int> createContact(
-    String name,
-    String number,
-    String email,
-    Group group,
-  );
+  Future<void> createContact(Contact contact);
 
-  Future<int> updateContact(
-    String name,
-    String number,
-    String email,
-    Group group,
-  );
+  Future<void> updateContact(Contact contact);
 }

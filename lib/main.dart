@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.light(context),
+        theme: AppTheme.dark(context),
         home: permissionStatus == null
             ? const PermisionChecker()
             : permissionStatus

@@ -13,12 +13,12 @@ enum ContactAction { edit, delete }
 class ContactDetailsWidget extends StatelessWidget {
   final Color color;
   final String? email;
-  final int index;
   final String? group;
   final Uint8List? imageUrl;
   final String location;
   final String name;
   final String number;
+  final String id;
   const ContactDetailsWidget({
     super.key,
     required this.name,
@@ -27,9 +27,8 @@ class ContactDetailsWidget extends StatelessWidget {
     required this.location,
     this.email,
     this.group,
-    required this.color, required this.index,
+    required this.color, required this.id,
   });
-
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +45,7 @@ class ContactDetailsWidget extends StatelessWidget {
               title: Text(
                 name,
                 textScaleFactor: 1,
-                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                       color: Theme.of(context).appBarTheme.backgroundColor,
                     ),
               ),
@@ -97,6 +96,7 @@ class ContactDetailsWidget extends StatelessWidget {
                           name: name,
                           number: number,
                           group: Group.non,
+                          id: id,
                           title: 'Edit Contact',
                         ),
                       ),

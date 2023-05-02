@@ -17,21 +17,24 @@ class ContactAdapter extends TypeAdapter<Contact> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Contact(
-      name: fields[0] as String,
-      number: fields[1] as String,
-      group: fields[2] == null ? Group.non : fields[2] as Group,
+      id: fields[0] as String,
+      name: fields[1] as String,
+      number: fields[2] as String,
+      group: fields[3] == null ? Group.non : fields[3] as Group,
     );
   }
 
   @override
   void write(BinaryWriter writer, Contact obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.number)
+      ..write(obj.name)
       ..writeByte(2)
+      ..write(obj.number)
+      ..writeByte(3)
       ..write(obj.group);
   }
 

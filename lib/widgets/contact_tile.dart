@@ -10,8 +10,8 @@ import 'contact_details_widget.dart';
 class ContactTile extends StatelessWidget {
   final String name;
   final String number;
-  final int index;
   final String tag;
+  final String id;
   final Uint8List? imageUrl;
   final Group? group;
   const ContactTile({
@@ -20,7 +20,7 @@ class ContactTile extends StatelessWidget {
     required this.number,
     this.imageUrl,
     this.group,
-    required this.tag, required this.index,
+    required this.tag, required this.id,
   });
 
   void _launchDialer(String number) async {
@@ -52,10 +52,10 @@ class ContactTile extends StatelessWidget {
               builder: (_) => ContactDetailsWidget(
                 name: name,
                 color: bgColor,
-                index: index,
                 imageUrl: imageUrl,
                 number: number.toString(),
                 location: 'Location',
+                id: id,
                 group: groupString[group],
               ),
             ),

@@ -50,6 +50,7 @@ dependencies:
   mockito: ^5.4.0
   riverpod: ^2.3.6
   flutter_riverpod: ^2.3.6
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
