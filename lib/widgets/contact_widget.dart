@@ -143,6 +143,7 @@ class _ContactWidgetState extends State<ContactWidget> {
             children: [
               const SizedBox(height: 50),
               Textfield(
+                key: const Key('FirstName'),
                 controller: _firstNameController,
                 hint: 'FirstName',
                 icon: Icons.person,
@@ -153,6 +154,7 @@ class _ContactWidgetState extends State<ContactWidget> {
                 height: 24,
               ),
               Textfield(
+                key: const Key('LastName'),
                 controller: _lastNameController,
                 hint: 'LastName',
                 validator: (val) => _errorText(val!),
@@ -161,6 +163,7 @@ class _ContactWidgetState extends State<ContactWidget> {
                 height: 24,
               ),
               Textfield(
+                key: const Key('Phone'),
                 controller: _numberNameController,
                 hint: 'Phone',
                 icon: Icons.phone,
@@ -174,6 +177,7 @@ class _ContactWidgetState extends State<ContactWidget> {
                 height: 24,
               ),
               Textfield(
+                key: const Key('Email'),
                 controller: _emailNameController,
                 hint: 'Email',
                 icon: Icons.email,
@@ -209,6 +213,7 @@ class _ContactWidgetState extends State<ContactWidget> {
                               style: Theme.of(context).textTheme.bodyLarge),
                         ),
                         PopupMenuItem(
+                          key: const Key('NON'),
                           value: Group.non,
                           child: Text('Non',
                               style: Theme.of(context).textTheme.bodyLarge),
