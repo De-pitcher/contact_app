@@ -14,4 +14,6 @@ abstract class HiveDbRepository {
   Future<void> createContact(Contact contact);
 
   Future<void> updateContact(Contact contact);
+
+  bool deleteContact(String id);
 }

@@ -135,33 +135,43 @@ void main() {
         verifyNever(hiveInterface.box<Contact>(fakeContactBoxName));
       });
     });
- test('Test createContact()', () async {
-        final contactBox = MockMockHiveBox<Contact>();
-        final contact = Contact(
-          id: const Uuid().v1(),
-          name: 'name',
-          number: 'number',
-        );
-        when(hiveInterface.box<Contact>(contactsBoxName))
-            .thenAnswer((_) => contactBox);
+    test('Test createContact()', () async {
+      final contactBox = MockMockHiveBox<Contact>();
+      final contact = Contact(
+        id: const Uuid().v1(),
+        name: 'name',
+        number: 'number',
+      );
+      when(hiveInterface.box<Contact>(contactsBoxName))
+          .thenAnswer((_) => contactBox);
 
-        hiveDb.createContact(contact);
+      hiveDb.createContact(contact);
 
-        verify(hiveInterface.box<Contact>(contactsBoxName));
-      });
+      verify(hiveInterface.box<Contact>(contactsBoxName));
+    });
 
-       test('Test updateContact()', () async {
-        final contactBox = MockMockHiveBox<Contact>();
-        final contact = contacts[1]..name = 'name';
-        when(hiveInterface.box<Contact>(contactsBoxName))
-            .thenAnswer((_) => contactBox);
-        when(hiveInterface.isBoxOpen(contactsBoxName)).thenReturn(true);
-        when(contactBox.values).thenAnswer((_) => contacts);
+    test('Test updateContact()', () async {
+      final contactBox = MockMockHiveBox<Contact>();
+      final contact = contacts[1]..name = 'name';
+      when(hiveInterface.box<Contact>(contactsBoxName))
+          .thenAnswer((_) => contactBox);
+      when(hiveInterface.isBoxOpen(contactsBoxName)).thenReturn(true);
+      when(contactBox.values).thenAnswer((_) => contacts);
 
+      hiveDb.updateContact(contact);
 
-        hiveDb.updateContact(contact);
+      verify(hiveInterface.box<Contact>(contactsBoxName));
+    });
 
-        verify(hiveInterface.box<Contact>(contactsBoxName));
-      });
+    test('Test deleteContact()', () async {
+      final contactBox = MockMockHiveBox<Contact>();
+      when(hiveInterface.box<Contact>(contactsBoxName))
+          .thenAnswer((_) => contactBox);
+      when(contactBox.get(contacts[0].id)).thenReturn(null);
+
+      hiveDb.deleteContact(contacts[0].id);
+
+      verify(hiveInterface.box<Contact>(contactsBoxName));
+    });
   });
 }

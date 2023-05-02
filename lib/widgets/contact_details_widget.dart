@@ -2,7 +2,9 @@ import 'dart:typed_data';
 
 import 'package:contact_app/widgets/contact_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
+import '../data/hive_db.dart';
 import '../models/group.dart';
 import 'contact_detail_tile.dart';
 import 'details_widget.dart';
@@ -27,7 +29,8 @@ class ContactDetailsWidget extends StatelessWidget {
     required this.location,
     this.email,
     this.group,
-    required this.color, required this.id,
+    required this.color,
+    required this.id,
   });
 
   @override
@@ -101,6 +104,23 @@ class ContactDetailsWidget extends StatelessWidget {
                         ),
                       ),
                     );
+                  } else if (value == ContactAction.delete) {
+                    final result = HiveDb(Hive).deleteContact(id);
+                    if (result) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Contact deleted!'),
+                        ),
+                      );
+                      Navigator.of(context).pop();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Something went wrong!'),
+                        ),
+                      );
+                      Navigator.of(context).pop();
+                    }
                   }
                 },
               )

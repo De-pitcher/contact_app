@@ -22,6 +22,16 @@ class HiveDb implements HiveDbRepository {
     hive.registerAdapter<Group>(GroupAdapter());
   }
 
+  Future<Box<E>> _openBox<E>(String name) async {
+    try {
+      final box = await hive.openBox<E>(name);
+      return box;
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e);
+    }
+  }
+
   @override
   Future<void> setPermission(bool value) async {
     try {
@@ -74,14 +84,14 @@ class HiveDb implements HiveDbRepository {
     return contactBox.putAt(index, contact);
   }
 
-  Future<Box<E>> _openBox<E>(String name) async {
-    try {
-      final box = await hive.openBox<E>(name);
-      return box;
-    } catch (e) {
-      log(e.toString());
-      throw Exception(e);
+  @override
+  bool deleteContact(String id) {
+    final contactBox = hive.box<Contact>(contactsBoxName);
+    contactBox.delete(id);
+    if (contactBox.get(id) != null) {
+      return false;
     }
+    return true;
   }
 
   List<Contact> convertToContact(List<local.Contact> contacts) {
