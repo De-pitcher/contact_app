@@ -17,6 +17,7 @@ class ContactWidget extends StatefulWidget {
   final String number;
   final String email;
   final Group group;
+  final bool isCreate;
   const ContactWidget({
     super.key,
     this.name = '',
@@ -24,7 +25,7 @@ class ContactWidget extends StatefulWidget {
     this.email = '',
     required this.group,
     required this.title,
-    this.id = '',
+    this.id = '', required this.isCreate,
   });
 
   @override
@@ -77,7 +78,7 @@ class _ContactWidgetState extends State<ContactWidget> {
         email: _emailNameController.value.text,
         group: _dropdownValue,
       );
-      if (widget.id == '') {
+      if (!widget.isCreate) {
         await HiveDb(Hive).updateContact(contact).then((value) =>
             Navigator.of(context).pushReplacementNamed(MyHomeScreen.id));
       } else {
