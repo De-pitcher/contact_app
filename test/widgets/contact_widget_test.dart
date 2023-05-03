@@ -9,6 +9,7 @@ void main() {
       body: ContactWidget(
         group: Group.non,
         title: 'Testing the ContactWidget',
+        isCreate: true,
       ),
     ),
   );

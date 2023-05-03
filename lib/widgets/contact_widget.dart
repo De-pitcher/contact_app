@@ -1,14 +1,14 @@
-import 'package:contact_app/utils/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:contact_app/widgets/text_field.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
+import '../utils/email_validator.dart';
+import '../widgets/text_field.dart';
 import '../data/hive_db.dart';
 import '../models/contact.dart';
 import '../models/group.dart';
 import '../screens/my_home_screen.dart';
-import '../utils/app_color.dart';
 
 class ContactWidget extends StatefulWidget {
   final String title;
@@ -25,7 +25,8 @@ class ContactWidget extends StatefulWidget {
     this.email = '',
     required this.group,
     required this.title,
-    this.id = '', required this.isCreate,
+    this.id = '',
+    required this.isCreate,
   });
 
   @override
@@ -83,7 +84,7 @@ class _ContactWidgetState extends State<ContactWidget> {
             Navigator.of(context).pushReplacementNamed(MyHomeScreen.id));
       } else {
         await HiveDb(Hive)
-            .createContact(contact)
+            .createContact(contact..id = const Uuid().v1())
             .then((value) => Navigator.of(context).pop());
       }
       setState(() {
@@ -131,7 +132,8 @@ class _ContactWidgetState extends State<ContactWidget> {
               padding: const EdgeInsets.only(right: 16.0),
               child: TextButton(
                 onPressed: _onCreate,
-                style: TextButton.styleFrom(foregroundColor: AppColor.primary),
+                style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.secondary),
                 child: _isLoading
                     ? CircularProgressIndicator(
                         color: Theme.of(context).scaffoldBackgroundColor,
@@ -148,7 +150,7 @@ class _ContactWidgetState extends State<ContactWidget> {
             child: Column(
               children: [
                 const SizedBox(height: 50),
-                Textfield(
+                CustomTextField(
                   key: const Key('FirstName'),
                   controller: _firstNameController,
                   hint: 'FirstName',
@@ -159,7 +161,7 @@ class _ContactWidgetState extends State<ContactWidget> {
                 const SizedBox(
                   height: 24,
                 ),
-                Textfield(
+                CustomTextField(
                   key: const Key('LastName'),
                   controller: _lastNameController,
                   hint: 'LastName',
@@ -167,7 +169,7 @@ class _ContactWidgetState extends State<ContactWidget> {
                 const SizedBox(
                   height: 24,
                 ),
-                Textfield(
+                CustomTextField(
                   key: const Key('Phone'),
                   controller: _numberNameController,
                   hint: 'Phone',
@@ -182,7 +184,7 @@ class _ContactWidgetState extends State<ContactWidget> {
                 const SizedBox(
                   height: 24,
                 ),
-                Textfield(
+                CustomTextField(
                   key: const Key('Email'),
                   controller: _emailNameController,
                   hint: 'Email',
@@ -238,7 +240,10 @@ class _ContactWidgetState extends State<ContactWidget> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
-                                  .copyWith(color: AppColor.primary),
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary),
                             ),
                             const SizedBox(width: 8),
                             Icon(

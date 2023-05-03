@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Textfield extends StatelessWidget {
+class CustomTextField extends StatelessWidget {
   final String hint;
   final int? maxLength;
   final String? errorText;
@@ -11,7 +11,7 @@ class Textfield extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? inputFormatters;
-  const Textfield({
+  const CustomTextField({
     Key? key,
     required this.hint,
     this.controller,

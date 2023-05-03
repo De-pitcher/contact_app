@@ -19,6 +19,7 @@ class HiveDb implements HiveDbRepository {
   Future initializeDb() async {
     await hive.initFlutter();
     await _openBox<bool>(darkModeBoxName);
+    await _openBox<bool>(showGroupBoxName);
     hive.registerAdapter<Contact>(ContactAdapter());
     hive.registerAdapter<Group>(GroupAdapter());
   }

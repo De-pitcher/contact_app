@@ -62,6 +62,9 @@ class AppTextTheme {
       titleLarge: Theme.of(context)
           .textTheme
           .titleLarge!
+          .copyWith(color: AppColor.color2), titleMedium: Theme.of(context)
+          .textTheme
+          .titleMedium!
           .copyWith(color: AppColor.color2),
     );
   }
@@ -87,6 +90,10 @@ class AppTextTheme {
       titleLarge: Theme.of(context)
           .textTheme
           .titleLarge!
+          .copyWith(color: AppColor.secondary),
+           titleMedium: Theme.of(context)
+          .textTheme
+          .titleMedium!
           .copyWith(color: AppColor.secondary),
     );
   }

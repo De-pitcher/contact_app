@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -80,16 +82,13 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
           ? 0
           : alphabets.indexWhere((element) =>
               element == widget.contacts[value()].name[0].toUpperCase());
-      print('Debug (itemPosition): ${_currentIndex.value}');
-      print('Debug (_searchIndex): ${value()}');
-      print('Debug (Contact current index): $_currentIndex');
     });
 
     super.initState();
   }
 
   void initList(List<Contact> contacts) {
-    print('>----------- Initialize the list -------------<');
+    log('>----------- Initialize the list -------------<');
     CustomSuspensionUtil.sortListBySuspensionTag(widget.contacts);
     CustomSuspensionUtil.setShowSuspensionStatus(widget.contacts);
   }
