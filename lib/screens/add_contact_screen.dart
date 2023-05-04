@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:contact_app/widgets/text_field.dart';
 
-import '../data/hive_db.dart';
 import '../models/group.dart';
 
 class AddContact extends StatefulWidget {
@@ -47,13 +46,8 @@ class _AddContactState extends State<AddContact> {
           },
         ),
         title: const Text('Create new contact'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.check),
-            onPressed: () {
-              HiveDb.addContact();
-            },
-          )
+        actions: const [
+          Icon(Icons.check),
         ],
       ),
       body: Container(

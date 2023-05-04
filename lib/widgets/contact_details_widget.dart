@@ -22,7 +22,7 @@ class ContactDetailsWidget extends StatelessWidget {
     required this.location,
     this.email,
     this.group,
-    required this.color,
+    required this.color, ///////////////////////////////////////////////////////////////////////////////////
   });
 
   @override
