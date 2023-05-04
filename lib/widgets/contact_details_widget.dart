@@ -31,9 +31,14 @@ class ContactDetailsWidget extends StatelessWidget {
     required this.number,
     required this.location,
     this.email,
+<<<<<<< HEAD
+    this.group,
+    required this.color, ///////////////////////////////////////////////////////////////////////////////////
+=======
     this.group = Group.non,
     required this.color,
     required this.id,
+>>>>>>> 5dabbd921a7b2a455bbf1705d0ae04094b86292e
   });
 
   void _launchUrl(String scheme, [String? path]) async {
