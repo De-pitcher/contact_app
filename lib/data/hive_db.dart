@@ -54,13 +54,15 @@ class HiveDb implements HiveDbRepository {
       Hive.box<Contact>(contactsBoxName).values.toList();
 
   @override
-  Future<int> createContact(String name, String number, String email, Group group) {
+  Future<int> createContact(
+      String name, String number, String email, Group group) {
     // final contactBox = Hive.box<ContactList>(contactListBoxName);
     // final contacts = [...getContacts()];
     // contacts.add(Contact(name: name, number: number, group: group));
     // contactBox.put(getContacts().length + 1, ContactList(contacts));
     final contactBox = Hive.box<Contact>(contactsBoxName);
     return contactBox.add(Contact(name: name, number: number, group: group));
-   
   }
+
+  static void addContact() {}
 }
