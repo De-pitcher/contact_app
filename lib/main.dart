@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import 'constants/constants.dart';
 import 'data/hive_db.dart';
 import 'permission_checker.dart';
+import 'screens/add_contact_screen.dart';
 import 'screens/my_home_screen.dart';
 import 'utils/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  HiveDb hiveDb = HiveDb();
-  await hiveDb.initializeBoxes();
-
+  HiveDb hiveDb = HiveDb(Hive);
+  await hiveDb.initializeDb();
 
   runApp(const MyApp());
 }
@@ -19,18 +22,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final permissionStatus = HiveDb().getPermission();
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark(context),
-      home: permissionStatus == null
-          ? const PermisionChecker()
-          : permissionStatus
-              ? const MyHomeScreen()
-              : const PermisionChecker(),
-      routes: {
-        MyHomeScreen.id: (_) => const MyHomeScreen(),
+    final permissionStatus = HiveDb(Hive).getPermission();
+    return ValueListenableBuilder(
+      valueListenable:
+          HiveDb(Hive).hive.box<bool>(darkModeBoxName).listenable(),
+      builder: (_, box, __) {
+        var darkMode = box.get(darkModeBoxName,defaultValue: false);
+        return MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: darkMode! 
+              ? AppTheme.dark(context)
+              : AppTheme.light(context),
+          home: permissionStatus == null
+              ? const PermisionChecker()
+              : permissionStatus
+                  ? const MyHomeScreen()
+                  : const PermisionChecker(),
+          routes: {
+            MyHomeScreen.id: (_) => const MyHomeScreen(),
+            AddContact.id: (_) => const AddContact(),
+          },
+        );
       },
     );
   }

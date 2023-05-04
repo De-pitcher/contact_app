@@ -4,11 +4,13 @@ class IconCard extends StatelessWidget {
   final IconData icon;
   final Color? color;
   final Color? iconColor;
+  final void Function()? onPressed;
   const IconCard({
     super.key,
     required this.icon,
     this.color,
     this.iconColor,
+    this.onPressed,
   });
 
   @override
@@ -22,9 +24,9 @@ class IconCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Icon(
-          icon,
-          color: iconColor,
+        child: GestureDetector(
+          onTap: onPressed,
+          child: Icon(icon,color: iconColor),
         ),
       ),
     );

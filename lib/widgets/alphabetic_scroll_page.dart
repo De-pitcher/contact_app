@@ -39,7 +39,7 @@ class AlphabeticScrollPage extends StatefulWidget {
 }
 
 class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
-  List<Contact> contacts = [];
+  // List<Contact> contacts = [];
   List<String> alphabets = [
     '#',
     ...List.generate(26, (index) => String.fromCharCode(index + 65))
@@ -58,15 +58,17 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
 
   void _jumpTo(String searchLetter) {
     setState(() {
-      final index = contacts
+      final index = widget.contacts
           .indexWhere((element) => element.getSuspensionTag() == searchLetter);
       if (index >= 0) _itemScrollController.jumpTo(index: index);
     });
   }
 
   void _changeCurrentIndex(int value) {
-    _currentIndex.value = alphabets.indexWhere(
-        (element) => element == contacts[value].name[0].toUpperCase());
+    _currentIndex.value = widget.contacts[value].name.isEmpty
+        ? 0
+        : alphabets.indexWhere((element) =>
+            element == widget.contacts[value].name[0].toUpperCase());
   }
 
   @override
@@ -74,8 +76,10 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
     initList(widget.contacts);
     _itemPositionsListener.itemPositions.addListener(() {
       _changeCurrentIndex(value());
-      _currentIndex.value = alphabets.indexWhere(
-          (element) => element == contacts[value()].name[0].toUpperCase());
+      _currentIndex.value = widget.contacts[value()].name.isEmpty
+          ? 0
+          : alphabets.indexWhere((element) =>
+              element == widget.contacts[value()].name[0].toUpperCase());
       print('Debug (itemPosition): ${_currentIndex.value}');
       print('Debug (_searchIndex): ${value()}');
       print('Debug (Contact current index): $_currentIndex');
@@ -85,9 +89,15 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
   }
 
   void initList(List<Contact> contacts) {
-    this.contacts = contacts;
-    CustomSuspensionUtil.sortListBySuspensionTag(this.contacts);
-    CustomSuspensionUtil.setShowSuspensionStatus(this.contacts);
+    print('>----------- Initialize the list -------------<');
+    CustomSuspensionUtil.sortListBySuspensionTag(widget.contacts);
+    CustomSuspensionUtil.setShowSuspensionStatus(widget.contacts);
+  }
+
+  @override
+  void didUpdateWidget(covariant AlphabeticScrollPage oldWidget) {
+    initList(widget.contacts);
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -102,10 +112,11 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
           Container(
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.only(right: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: alphabets.map((alpha) {
-                return InkWell(
+            child: SizedBox(
+              width: 20,
+              child: ListView(
+                children: alphabets.map((alpha) {
+                  return GestureDetector(
                     onTap: () => _jumpTo(alpha),
                     child: ValueListenableBuilder(
                       valueListenable: _currentIndex,
@@ -133,8 +144,10 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
                           ),
                         ),
                       ),
-                    ));
-              }).toList(),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           )
         ],
@@ -143,17 +156,15 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
   }
 
   Widget _list(Orientation orientation) => ScrollablePositionedList.builder(
-        itemCount: contacts.length,
-        itemBuilder: (_, index) => _buildListItem(contacts[index]),
+        itemCount: widget.contacts.length,
+        itemBuilder: (_, index) => _buildListItem(widget.contacts[index],index),
         itemScrollController: _itemScrollController,
         itemPositionsListener: _itemPositionsListener,
         reverse: false,
-        scrollDirection: orientation == Orientation.portrait
-            ? Axis.vertical
-            : Axis.horizontal,
+        scrollDirection: Axis.vertical,
       );
 
-  Widget _buildListItem(Contact contact) {
+  Widget _buildListItem(Contact contact, int index) {
     final offstage = !contact.isShowSuspension;
     return Column(
       children: [
@@ -162,8 +173,10 @@ class _AlphabeticScrollPageState extends State<AlphabeticScrollPage> {
           child: buildHeader(contact.getSuspensionTag()),
         ),
         ContactTile(
+          id: contact.id,
           name: contact.name,
           number: contact.number,
+          email: contact.email,
           group: contact.group,
           tag: contact.getSuspensionTag(),
         ),

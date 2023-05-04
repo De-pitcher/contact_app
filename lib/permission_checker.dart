@@ -4,11 +4,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart' as local;
 
-import 'constants/constants.dart';
 import 'data/hive_db.dart';
-import 'models/contact_list.dart';
 import 'screens/my_home_screen.dart';
 import 'utils/app_color.dart';
+import 'widgets/empty_widget.dart';
 
 class PermisionChecker extends StatefulWidget {
   const PermisionChecker({super.key});
@@ -18,6 +17,8 @@ class PermisionChecker extends StatefulWidget {
 }
 
 class _PermisionCheckerState extends State<PermisionChecker> {
+  final HiveDb _hiveDb = HiveDb(Hive);
+
   Future<PermissionStatus> _getContactPermission() async {
     PermissionStatus permission = await Permission.contacts.status;
     if (permission != PermissionStatus.granted &&
@@ -30,15 +31,16 @@ class _PermisionCheckerState extends State<PermisionChecker> {
   }
 
   Future _initialzedContacts() async {
-    return HiveDb().initializeContact(
+    final convertedContact = _hiveDb.convertToContact(
         await local.ContactsService.getContacts(withThumbnails: false));
+    return _hiveDb.initializeContact(convertedContact);
   }
 
   Future<bool> _shouldInitialize() async {
-    final contactBox = Hive.box<ContactList>(contactListBoxName);
+    final contacts = _hiveDb.getContacts();
     bool result = false;
 
-    if (contactBox.isEmpty) {
+    if (contacts.isEmpty) {
       if (kDebugMode) {
         print('Debug: ===> isEmpty');
       }
@@ -51,7 +53,7 @@ class _PermisionCheckerState extends State<PermisionChecker> {
       await local.ContactsService.getContacts(withThumbnails: false)
           .then((data) {
         final shouldUpdate =
-            data.length > contactBox.values.first.contacts.length;
+            data.length > contacts.length;
         if (shouldUpdate) {
           if (kDebugMode) {
             print('Debug: ===> shouldUpdate');
@@ -77,7 +79,7 @@ class _PermisionCheckerState extends State<PermisionChecker> {
       const snackBar = SnackBar(content: Text('Access to contact data denied'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else if (permissionStatus == PermissionStatus.granted) {
-      HiveDb().setPermission(true);
+      _hiveDb.setPermission(true);
     } else if (permissionStatus == PermissionStatus.permanentlyDenied) {
       const snackBar =
           SnackBar(content: Text('Contact data not available on device'));
@@ -106,11 +108,14 @@ class _PermisionCheckerState extends State<PermisionChecker> {
                 if (snapshot.hasData) {
                   return const MyHomeScreen();
                 }
-                return const Scaffold(
+                if(snapshot.hasError) {
+                  return  Scaffold(
                   body: Center(
-                    child: Text('Could\'nt load contacts'),
+                    child: Text('An error occurred: ${snapshot.error.toString()}'),
                   ),
                 );
+                }
+                return const EmptyWidget();
               },
             );
           }
