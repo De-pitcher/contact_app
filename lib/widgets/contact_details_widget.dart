@@ -122,12 +122,13 @@ class ContactDetailsWidget extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => ContactWidget(
+                          id: id,
+                          title: 'Edit Contact',
+                          isCreate: false,
                           name: name,
                           number: number,
                           email: email!,
                           group: group,
-                          id: id,
-                          title: 'Edit Contact',
                         ),
                       ),
                     );

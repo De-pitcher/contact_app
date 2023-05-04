@@ -6,7 +6,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../constants/constants.dart';
 import '../data/hive_db.dart';
 import '../models/contact.dart';
-import '../utils/app_color.dart';
 import '../widgets/search_tile.dart';
 import '../widgets/contact_list_widget.dart';
 
@@ -52,11 +51,27 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                     darkMode!
                         ? Icons.dark_mode_rounded
                         : Icons.dark_mode_outlined,
-                        color: AppColor.color2,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                   ),
                   onPressed: () {
                     box.put(darkModeBoxName, !darkMode);
                   },
+                );
+              },
+            ),
+            ValueListenableBuilder(
+              valueListenable:
+                  HiveDb(Hive).hive.box<bool>(showGroupBoxName).listenable(),
+              builder: (_, box, __) {
+                var showGroup = box.get(showGroupBoxName, defaultValue: false);
+                return IconButton(
+                  onPressed: () {
+                    box.put(showGroupBoxName, !showGroup);
+                  },
+                  icon: Icon(
+                    showGroup! ? Icons.group : Icons.group_outlined,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
                 );
               },
             )
