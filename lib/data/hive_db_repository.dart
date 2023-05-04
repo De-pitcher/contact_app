@@ -1,18 +1,19 @@
-import 'package:contacts_service/contacts_service.dart' as local;
-
 import '../models/contact.dart';
-import '../models/group.dart';
 
 abstract class HiveDbRepository {
-  Future initializeBoxes();
+  Future initializeDb();
 
-  bool? getPermission();
+  Future<void> setPermission(bool value);
 
-  void setPermission(bool value);
+  bool? getPermission([String? name]);
 
-  Future initializeContact(List<local.Contact> contacts);
+  Future<void> initializeContact(List<Contact> contacts);
 
-  List<Contact> getContacts();
+  List<Contact> getContacts([String? name]);
 
-  Future<int> createContact(String name, String number, String email, Group group);
+  Future<void> createContact(Contact contact);
+
+  Future<void> updateContact(Contact contact);
+
+  bool deleteContact(String id);
 }

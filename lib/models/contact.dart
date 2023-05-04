@@ -8,13 +8,22 @@ part 'contact.g.dart';
 @HiveType(typeId: 0)
 class Contact extends ISuspensionBean {
   @HiveField(0)
-  String name;
+  String id;
   @HiveField(1)
+  String name;
+  @HiveField(2)
   String number;
-  @HiveField(2, defaultValue: Group.non)
+  @HiveField(3)
+  String email;
+  @HiveField(4, defaultValue: Group.non)
   Group group;
 
-  Contact({required this.name, required this.number, required this.group});
+  Contact(
+      {required this.id,
+      required this.name,
+      required this.number,
+      required this.email,
+      this.group = Group.non});
 
   @override
   String getSuspensionTag() {

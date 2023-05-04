@@ -2,34 +2,29 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../models/group.dart';
 import 'contact_details_widget.dart';
 
 class ContactTile extends StatelessWidget {
+  final String tag;
+  final String id;
   final String name;
   final String number;
-  final String tag;
+  final String email;
   final Uint8List? imageUrl;
-  final Group? group;
+  final Group group;
   const ContactTile({
     super.key,
     required this.name,
     required this.number,
     this.imageUrl,
-    this.group,
+    this.group = Group.non,
     required this.tag,
+    required this.id,
+    required this.email,
   });
 
-  void _launchDialer(String number) async {
-    print('Debug (check number): $number');
-
-    final url = Uri(scheme: 'tel', path: number);
-    if (!await launchUrl(url)) {
-      throw 'Application unable to open dialer.';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +48,10 @@ class ContactTile extends StatelessWidget {
                 color: bgColor,
                 imageUrl: imageUrl,
                 number: number.toString(),
+                email: email,
                 location: 'Location',
-                group: groupString[group],
+                id: id,
+                group: group,
               ),
             ),
           );
@@ -64,7 +61,10 @@ class ContactTile extends StatelessWidget {
             : CircleAvatar(
                 backgroundColor: bgColor,
                 child: imageUrl == null || imageUrl!.isEmpty
-                    ? Text(tag)
+                    ? Text(
+                        tag,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )
                     : Image.memory(imageUrl!),
               ),
         title: Text(

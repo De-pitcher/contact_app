@@ -1,14 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../constants/constants.dart';
+import '../data/hive_db.dart';
+import '../models/contact.dart';
 import '../models/contact_list.dart';
 import 'alphabetic_scroll_page.dart';
 import 'empty_widget.dart';
 
 class ContactListWidget extends StatefulWidget {
+  final ValueListenable<Box<Contact>> contactListenable;
   const ContactListWidget({
-    super.key,
+    super.key, required this.contactListenable,
   });
 
   @override
@@ -18,12 +22,12 @@ class ContactListWidget extends StatefulWidget {
 class _ContactListWidgetState extends State<ContactListWidget> {
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: Hive.box<ContactList>(contactListBoxName).listenable(),
+    return ValueListenableBuilder<Box<Contact>>(
+      valueListenable:widget.contactListenable,
       builder: (_, box, __) => box.values.isEmpty
           ? const EmptyWidget()
           : AlphabeticScrollPage(
-              contacts: box.values.first.contacts,
+              contacts: box.values.toList(),
             ),
     );
   }

@@ -1,9 +1,11 @@
+import 'package:contact_app/models/group.dart';
 import 'package:flutter/material.dart';
-import 'package:contact_app/widgets/text_field.dart';
 
-import '../models/group.dart';
+import '../widgets/contact_widget.dart';
 
 class AddContact extends StatefulWidget {
+  static const id = '/add-contact';
+
   const AddContact({super.key});
 
   @override
@@ -11,30 +13,6 @@ class AddContact extends StatefulWidget {
 }
 
 class _AddContactState extends State<AddContact> {
-  late TextEditingController _firstNamecontroller;
-  late TextEditingController _lastNameController;
-  late TextEditingController _phoneController;
-  late TextEditingController _emailController;
-  String? dropdownValue = groupString[Group.non];
-
-  @override
-  void initState() {
-    _firstNamecontroller = TextEditingController();
-    _lastNameController = TextEditingController();
-    _phoneController = TextEditingController();
-    _emailController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _firstNamecontroller.dispose();
-    _lastNameController.dispose();
-    _phoneController.dispose();
-    _emailController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,9 +24,7 @@ class _AddContactState extends State<AddContact> {
           },
         ),
         title: const Text('Create new contact'),
-        actions: const [
-          Icon(Icons.check),
-        ],
+        actions: const [Icon(Icons.check)],
       ),
       body: Container(
         padding: const EdgeInsets.all(20.0),
