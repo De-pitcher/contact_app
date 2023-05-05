@@ -59,22 +59,22 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 );
               },
             ),
-            ValueListenableBuilder(
-              valueListenable:
-                  HiveDb(Hive).hive.box<bool>(showGroupBoxName).listenable(),
-              builder: (_, box, __) {
-                var showGroup = box.get(showGroupBoxName, defaultValue: false);
-                return IconButton(
-                  onPressed: () {
-                    box.put(showGroupBoxName, !showGroup);
-                  },
-                  icon: Icon(
-                    showGroup! ? Icons.group : Icons.group_outlined,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                );
-              },
-            )
+            // ValueListenableBuilder(
+            //   valueListenable:
+            //       HiveDb(Hive).hive.box<bool>(showGroupBoxName).listenable(),
+            //   builder: (_, box, __) {
+            //     var showGroup = box.get(showGroupBoxName, defaultValue: false);
+            //     return IconButton(
+            //       onPressed: () {
+            //         box.put(showGroupBoxName, !showGroup);
+            //       },
+            //       icon: Icon(
+            //         showGroup! ? Icons.group : Icons.group_outlined,
+            //         color: Theme.of(context).scaffoldBackgroundColor,
+            //       ),
+            //     );
+            //   },
+            // )
           ],
           bottom: PreferredSize(
             preferredSize:
